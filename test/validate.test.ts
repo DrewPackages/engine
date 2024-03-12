@@ -1,6 +1,7 @@
 import { validate } from "@src/validate";
 import { TestsFetcher } from "./fetcher";
 import Container from "typedi";
+import { UnknownApiError } from "@src/errors";
 
 describe("Engine Validate", () => {
   afterEach(() => {
@@ -33,5 +34,17 @@ describe("Engine Validate", () => {
     expect(script).toHaveLength(2);
     expect(script[0].group).toEqual("wallet");
     expect(script[1].group).toEqual("hardhat");
+  });
+
+  it("Should throw an error on unknown api", async () => {
+    expect.assertions(1);
+    const fetcher = new TestsFetcher();
+
+    const validation = validate(
+      { formulaName: "validate/unknownApi", values: {} },
+      fetcher
+    );
+
+    await expect(validation).rejects.toBeInstanceOf(UnknownApiError);
   });
 });
