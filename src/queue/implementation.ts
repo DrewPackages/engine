@@ -1,6 +1,6 @@
-import { ApiCall } from "@src/api/types";
+import { ApiCall } from "../api/types";
 import { IQueue, QUEUE_TOKEN } from "./types";
-import { UnknownStageError } from "@src/errors/index";
+import { UnknownStageError } from "../errors/index";
 import { Service } from "typedi";
 
 function checkStages(items: Array<ApiCall>, stages: Array<string>) {

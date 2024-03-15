@@ -1,5 +1,5 @@
 import { ApiMethodContext } from "../types";
-import { IQueue } from "@src/queue/types";
+import { IQueue } from "../../queue/types";
 
 export class BaseScheduler implements ApiMethodContext {
   constructor(

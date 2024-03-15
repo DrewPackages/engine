@@ -1,4 +1,4 @@
-import { ApiCall } from "@src/api/types";
+import { ApiCall } from "../api/types";
 import { Token } from "typedi";
 
 export interface IQueue {

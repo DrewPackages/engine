@@ -1,4 +1,4 @@
-import { IQueue, QUEUE_TOKEN } from "@src/queue/types";
+import { IQueue, QUEUE_TOKEN } from "../../queue/types";
 import { IApiScheduler } from "../types";
 import { BaseScheduler } from "../scheduler";
 import { Inject, Service } from "typedi";

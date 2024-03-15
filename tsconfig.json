@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "module": "CommonJS",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -10,10 +9,8 @@
     "baseUrl": ".",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "resolveJsonModule": true,
-    "paths": {
-      "@deps/*": ["./node_modules/*"],
-      "@src/*": ["./src/*"]
-    }
-  }
+    "outDir": "out",
+    "declaration": true
+  },
+  "include": ["./src/**/*.ts"]
 }

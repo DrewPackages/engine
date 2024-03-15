@@ -1,4 +1,4 @@
-import { IQueue } from "@src/queue/types";
+import { IQueue } from "../queue/types";
 import { Token } from "typedi";
 
 export type ApiCallDescriptor = {

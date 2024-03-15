@@ -1,6 +1,6 @@
 import { Container } from "typedi";
 import { API_TOKEN, IApiScheduler } from "./types";
-import { UnknownApiError } from "@src/errors";
+import { UnknownApiError } from "../errors";
 
 export class Api {
   public readonly schedulers: Map<string, IApiScheduler> = new Map();

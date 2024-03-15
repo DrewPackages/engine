@@ -1,7 +1,7 @@
-import { validate } from "@src/validate";
+import { validate } from "../src";
 import { TestsFetcher } from "./fetcher";
 import Container from "typedi";
-import { UnknownApiError } from "@src/errors";
+import { UnknownApiError } from "../src/errors";
 
 describe("Engine Validate", () => {
   afterEach(() => {
