@@ -1,9 +1,10 @@
 function deploy() {
-  api.wallet.sign({
-    msg: "0x123123124142",
-  });
-
   api.hardhat.script({
     path: "./scripts/deploy.ts",
+    envs: {
+      TOKEN_NAME: "Test Token",
+      TOKEN_SYMBOL: "TT",
+      TOKEN_SUPPLY: "10000",
+    },
   });
 }
