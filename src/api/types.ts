@@ -26,3 +26,21 @@ export type IApiScheduler<T extends string = string> = Record<
 export type IApi = Record<string, IApiScheduler>;
 
 export const API_TOKEN = new Token<IApi>("API_TOKEN");
+
+export type StageInstruction = {
+  workdir: string;
+  image: string;
+  cmd: Array<string>;
+  envs: Record<string, string>;
+};
+
+export function isCall<T extends ApiCallDescriptor>(
+  group: string,
+  version: number,
+  method: string,
+  call: ApiCallDescriptor
+): call is T {
+  return (
+    call.group === group && call.version === version && call.method === method
+  );
+}

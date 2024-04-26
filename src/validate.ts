@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import Container from "typedi";
+import { Container } from "typedi";
 import { QUEUE_TOKEN } from "./queue";
 import {
   API_TOKEN,
@@ -9,7 +9,7 @@ import {
   instantiateApi,
 } from "./api";
 import { IFormulaFetcher } from "./fetcher";
-import { EXECUTE_FROMULA_POSTFIX } from "./constants";
+import { EXECUTE_FORMULA_PREFIX, EXECUTE_FROMULA_POSTFIX } from "./constants";
 
 type DeployArgs<T extends object = {}> = {
   formulaName: string;
@@ -25,7 +25,6 @@ export async function validate(
   fetcher: IFormulaFetcher
 ): Promise<Array<ApiCall>> {
   instantiateApi(DEFAULT_APIS);
-  const api = Container.get(API_TOKEN);
 
   const formulaText = await fetcher.fetchFormulaFileText(
     args.formulaName,
@@ -33,7 +32,7 @@ export async function validate(
   );
 
   const results: FormulaExecutionResult =
-    eval(formulaText + EXECUTE_FROMULA_POSTFIX) || {};
+    eval(EXECUTE_FORMULA_PREFIX + formulaText + EXECUTE_FROMULA_POSTFIX) || {};
 
   const queue = Container.get(QUEUE_TOKEN);
 

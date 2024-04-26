@@ -19,3 +19,12 @@ export class UnknownApiError extends DrewError {
     super(`Unknown api name '${api}' in register api list`, "validate");
   }
 }
+
+export class UnknownApiCallError extends DrewError {
+  constructor(group: string, version: number, method: string) {
+    super(
+      `Unknown api call '${group}/${version}/${method}' in register api list`,
+      "execute"
+    );
+  }
+}
