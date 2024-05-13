@@ -1,5 +1,6 @@
 import { Token } from "typedi";
-import { ApiCallDescriptor, StageInstruction } from "../types";
+import { ApiCallDescriptor } from "../../api/types";
+import { StageInstruction } from "../types";
 
 export const API_PARSER_TOKEN = new Token<BaseApiParser>("API_PARSER");
 

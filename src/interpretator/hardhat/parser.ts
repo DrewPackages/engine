@@ -1,11 +1,13 @@
 import { Inject, Service } from "typedi";
-import { API_PARSER_TOKEN, BaseApiParser } from "../parser";
-import { ApiCall, ApiCallDescriptor, StageInstruction, isCall } from "../types";
+import { API_PARSER_TOKEN, BaseApiParser } from "../../interpretator/parser";
 import {
   HARDHAT_CONFIG_PROVIDER_TOKEN,
   HardhatConfig,
   HardhatConfigProvider,
 } from "./config";
+import { ApiCall } from "src/api";
+import { ApiCallDescriptor, isCall } from "src/api/types";
+import { StageInstruction } from "../types";
 
 type ScriptCall = ApiCall<
   [string, number, Record<string, string>],

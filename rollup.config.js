@@ -8,7 +8,8 @@ export default {
     format: "esm",
     entryFileNames: "[name].js",
   },
-  treeshaking: false,
+  treeshake: "recommended",
+  external: ["reflect-metadata", "typedi"],
   plugins: [
     typescript({ declaration: true, outDir: "out" }),
     terser({

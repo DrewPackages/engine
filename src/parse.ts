@@ -1,9 +1,15 @@
 import "reflect-metadata";
 import { Container } from "typedi";
-import { ApiCall, IEnvironmentResolver } from "./api";
-import { StageInstruction } from "./api/types";
-import { ENVIRONMENT_RESOLVER_TOKEN } from "./api/config";
-import { API_PARSER_TOKEN, BaseApiParser } from "./api/parser";
+import { ApiCall } from "./api";
+import {
+  ENVIRONMENT_RESOLVER_TOKEN,
+  IEnvironmentResolver,
+} from "./interpretator/config";
+import {
+  API_PARSER_TOKEN,
+  BaseApiParser,
+  StageInstruction,
+} from "./interpretator";
 import { UnknownApiCallError } from "./errors";
 
 export async function parse(
