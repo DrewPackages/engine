@@ -1,3 +1,5 @@
+import { JsonError } from "json-schema-library";
+
 type DrewErrorAction = "validate" | "execute" | "unspecified";
 
 export abstract class DrewError extends Error {
@@ -11,6 +13,24 @@ export abstract class DrewError extends Error {
 export class UnknownStageError extends DrewError {
   constructor(stage: string) {
     super(`Unknown stage '${stage}' in api calls`, "validate");
+  }
+}
+
+export class InvalidParamSchemaError extends DrewError {
+  constructor() {
+    super(`Invalid param schema detected`, "validate");
+  }
+}
+
+export class ParamSchemaNotFoundError extends DrewError {
+  constructor() {
+    super(`Param schema not found`, "validate");
+  }
+}
+
+export class InvalidParamError extends DrewError {
+  constructor(public readonly errors?: Array<JsonError>) {
+    super(`Param invalid`, "validate");
   }
 }
 

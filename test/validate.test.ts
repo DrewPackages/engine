@@ -1,9 +1,9 @@
-import { validate } from "../src";
+import "reflect-metadata";
+import { Container } from "typedi";
+import { validate, errors } from "../src";
 import { TestsFetcher } from "./fetcher";
-import Container from "typedi";
-import { UnknownApiError } from "../src/errors";
 
-describe("Engine Validate", () => {
+describe("Engine: Validate", () => {
   afterEach(() => {
     Container.reset();
   });
@@ -45,6 +45,6 @@ describe("Engine Validate", () => {
       fetcher
     );
 
-    await expect(validation).rejects.toBeInstanceOf(UnknownApiError);
+    await expect(validation).rejects.toBeInstanceOf(errors.UnknownApiError);
   });
 });

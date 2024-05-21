@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { Container } from "typedi";
+import { Container as TypeDIContainer } from "typedi";
 import { QUEUE_TOKEN } from "./queue";
 import {
   API_TOKEN,
@@ -10,6 +10,8 @@ import {
 } from "./api";
 import { IFormulaFetcher } from "./fetcher";
 import { EXECUTE_FORMULA_PREFIX, EXECUTE_FROMULA_POSTFIX } from "./constants";
+import { readParams, validateParam } from "./params";
+import _eval from "eval";
 
 type DeployArgs<T extends object = {}> = {
   formulaName: string;
@@ -22,7 +24,8 @@ type FormulaExecutionResult = Partial<{
 
 export async function validate(
   args: DeployArgs,
-  fetcher: IFormulaFetcher
+  fetcher: IFormulaFetcher,
+  params?: object
 ): Promise<Array<ApiCall>> {
   instantiateApi(DEFAULT_APIS);
 
@@ -31,10 +34,19 @@ export async function validate(
     "formula.js"
   );
 
-  const results: FormulaExecutionResult =
-    eval(EXECUTE_FORMULA_PREFIX + formulaText + EXECUTE_FROMULA_POSTFIX) || {};
+  const paramsSchema = readParams(formulaText);
+  validateParam(params, paramsSchema);
 
-  const queue = Container.get(QUEUE_TOKEN);
+  const results: FormulaExecutionResult =
+    _eval(
+      EXECUTE_FORMULA_PREFIX + formulaText + EXECUTE_FROMULA_POSTFIX(params),
+      {
+        Container: TypeDIContainer,
+        API_TOKEN: API_TOKEN,
+      }
+    ) || {};
+
+  const queue = TypeDIContainer.get(QUEUE_TOKEN);
 
   return queue.executionScript(results.stages || DEFAULT_STAGES);
 }

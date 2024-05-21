@@ -5,8 +5,8 @@ import {
   HardhatConfig,
   HardhatConfigProvider,
 } from "./config";
-import { ApiCall } from "src/api";
-import { ApiCallDescriptor, isCall } from "src/api/types";
+import { ApiCall } from "../../api";
+import { ApiCallDescriptor, isCall } from "../../api/types";
 import { StageInstruction } from "../types";
 
 type ScriptCall = ApiCall<

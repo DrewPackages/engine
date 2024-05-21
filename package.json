@@ -13,6 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "ethers": "^6.11.1",
+    "eval": "^0.1.8",
+    "json-schema-library": "^10.0.0-rc1",
     "reflect-metadata": "^0.2.1",
     "typedi": "^0.10.0"
   },
