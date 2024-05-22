@@ -1,4 +1,4 @@
-import { JsonError } from "json-schema-library";
+import { ValidationError } from "jsonschema";
 
 type DrewErrorAction = "validate" | "execute" | "unspecified";
 
@@ -29,7 +29,7 @@ export class ParamSchemaNotFoundError extends DrewError {
 }
 
 export class InvalidParamError extends DrewError {
-  constructor(public readonly errors?: Array<JsonError>) {
+  constructor(public readonly errors?: Array<ValidationError>) {
     super(`Param invalid`, "validate");
   }
 }

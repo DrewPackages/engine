@@ -39,7 +39,11 @@ export async function validate(
 
   const results: FormulaExecutionResult =
     _eval(
-      EXECUTE_FORMULA_PREFIX + formulaText + EXECUTE_FROMULA_POSTFIX(params),
+      EXECUTE_FORMULA_PREFIX +
+        formulaText +
+        "module.exports = " +
+        EXECUTE_FROMULA_POSTFIX(params),
+      "formula-validate.js",
       {
         Container: TypeDIContainer,
         API_TOKEN: API_TOKEN,

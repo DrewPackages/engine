@@ -1,16 +1,16 @@
-import { JsonSchema } from "json-schema-library";
+import { Schema } from "jsonschema";
 import { InvalidParamSchemaError } from "../errors";
 import _eval from "eval";
 
 const PARAMS_SCHEMA_VAR_NAME = "paramsSchema";
-const DEFAULT_ID = "/FormulaParams";
 const DRAFT_URL = "https://json-schema.org/draft/2020-12/schema";
 
-export function readParams(formulaText: string): JsonSchema | undefined {
-  const paramTypeObject: JsonSchema = formulaText.includes(
-    PARAMS_SCHEMA_VAR_NAME
-  )
-    ? _eval(formulaText + "\n module.exports = " + PARAMS_SCHEMA_VAR_NAME + ";")
+export function readParams(formulaText: string): Schema | undefined {
+  const paramTypeObject: Schema = formulaText.includes(PARAMS_SCHEMA_VAR_NAME)
+    ? _eval(
+        formulaText + "\n module.exports = " + PARAMS_SCHEMA_VAR_NAME + ";",
+        "formula-read-params.js"
+      )
     : {};
 
   if (
@@ -24,12 +24,13 @@ export function readParams(formulaText: string): JsonSchema | undefined {
       throw new InvalidParamSchemaError();
     }
 
-    const { properties, required, $id } = paramTypeObject;
+    const { properties, required } = paramTypeObject;
     return {
-      $id: $id || DEFAULT_ID,
+      $schema: DRAFT_URL,
       properties,
       required,
       type: "object",
+      additionalProperties: false,
     };
   }
 }

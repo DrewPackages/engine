@@ -1,7 +1,7 @@
-import { Draft2019, JsonSchema } from "json-schema-library";
+import { Schema, validate } from "jsonschema";
 import { InvalidParamError, ParamSchemaNotFoundError } from "../errors";
 
-export function validateParam(param?: object, schema?: JsonSchema) {
+export function validateParam(param?: object, schema?: Schema) {
   if (schema == undefined && param != undefined) {
     throw new ParamSchemaNotFoundError();
   }
@@ -11,16 +11,12 @@ export function validateParam(param?: object, schema?: JsonSchema) {
   }
 
   if (schema && param) {
-    const jsonSchema = new Draft2019(schema);
-    Object.keys(param).forEach((param) => {
-      if (!(param in schema.properties)) {
-        throw new InvalidParamError();
-      }
+    const validationResult = validate(param, schema, {
+      allowUnknownAttributes: false,
     });
-    const validationResult = jsonSchema.validate(param);
 
-    if (validationResult.length > 0) {
-      throw new InvalidParamError(validationResult);
+    if (validationResult.errors.length > 0) {
+      throw new InvalidParamError(validationResult.errors);
     }
   }
 }
