@@ -44,7 +44,7 @@ export class HardhatParser extends BaseApiParser {
     { privateKey, rpcUrl }: HardhatConfig
   ): StageInstruction {
     return {
-      image: "ghcr.io/DrewPackages/engine/workers/hardhat",
+      image: "ghcr.io/drewpackages/engine/workers/hardhat",
       envs: { ...call.args[2], RPC_URL: rpcUrl, PRIVATE_KEY: privateKey },
       workdir: call.metadata.workdir || ".",
       cmd: ["run", call.args[0], "--network", "drew"],

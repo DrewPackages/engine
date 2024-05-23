@@ -4,4 +4,4 @@ export * as errors from "./errors";
 export { validate } from "./validate";
 export { parse } from "./parse";
 export { IFormulaFetcher } from "./fetcher";
-export { IEnvironmentResolver } from "./interpretator";
+export { IEnvironmentResolver, type StageInstruction } from "./interpretator";
