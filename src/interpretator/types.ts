@@ -1,4 +1,5 @@
 export type StageInstruction = {
+  type: "task" | "offchain";
   workdir: string;
   image: string;
   cmd: Array<string>;

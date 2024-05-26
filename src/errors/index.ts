@@ -48,3 +48,15 @@ export class UnknownApiCallError extends DrewError {
     );
   }
 }
+
+export class ApiConfigAlreadyResolvedError extends DrewError {
+  constructor(group: string) {
+    super(`Config for api '${group}' already resolved`, "execute");
+  }
+}
+
+export class ApiConfigNotResolvedError extends DrewError {
+  constructor(group: string) {
+    super(`Config for api '${group}' not resolved`, "execute");
+  }
+}

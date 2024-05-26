@@ -10,7 +10,7 @@ import {
 } from "./api";
 import { IFormulaFetcher } from "./fetcher";
 import { EXECUTE_FORMULA_PREFIX, EXECUTE_FROMULA_POSTFIX } from "./constants";
-import { readParams, validateParam } from "./params";
+import { readParamsSchema, validateParam } from "./params";
 import _eval from "eval";
 
 type DeployArgs<T extends object = {}> = {
@@ -34,7 +34,7 @@ export async function validate(
     "formula.js"
   );
 
-  const paramsSchema = readParams(formulaText);
+  const paramsSchema = readParamsSchema(formulaText);
   validateParam(params, paramsSchema);
 
   const results: FormulaExecutionResult =

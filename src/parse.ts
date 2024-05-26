@@ -4,8 +4,7 @@ import { ApiCall } from "./api";
 import {
   ENVIRONMENT_RESOLVER_TOKEN,
   IEnvironmentResolver,
-} from "./interpretator/config";
-import {
+  resolveConfigs,
   API_PARSER_TOKEN,
   BaseApiParser,
   StageInstruction,
@@ -17,6 +16,7 @@ export async function parse(
   env: IEnvironmentResolver
 ): Promise<Array<StageInstruction>> {
   Container.set(ENVIRONMENT_RESOLVER_TOKEN, env);
+  await resolveConfigs();
 
   const parsers = Container.getMany<BaseApiParser>(API_PARSER_TOKEN);
 
