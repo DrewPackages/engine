@@ -23,4 +23,12 @@ function deploy(params) {
       TOKEN_SUPPLY: params.totalSupply.toString(),
     },
   });
+
+  api.offchain.deploy({
+    details: {
+      envs: {
+        RPC_URL: params.config.common.rpcUrl(),
+      },
+    },
+  });
 }

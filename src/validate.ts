@@ -10,8 +10,9 @@ import {
 } from "./api";
 import { IFormulaFetcher } from "./fetcher";
 import { EXECUTE_FORMULA_PREFIX, EXECUTE_FROMULA_POSTFIX } from "./constants";
-import { readParamsSchema, validateParam } from "./params";
+import { addConfigs, readParamsSchema, validateParam } from "./params";
 import _eval from "eval";
+import { DEFAULT_OFFCHAIN_API } from "./api/constants";
 
 type DeployArgs<T extends object = {}> = {
   formulaName: string;
@@ -27,7 +28,7 @@ export async function validate(
   fetcher: IFormulaFetcher,
   params?: object
 ): Promise<Array<ApiCall>> {
-  instantiateApi(DEFAULT_APIS);
+  instantiateApi(DEFAULT_APIS, DEFAULT_OFFCHAIN_API);
 
   const formulaText = await fetcher.fetchFormulaFileText(
     args.formulaName,
@@ -37,16 +38,19 @@ export async function validate(
   const paramsSchema = readParamsSchema(formulaText);
   validateParam(params, paramsSchema);
 
+  const preparedParams = addConfigs(params || {});
+
   const results: FormulaExecutionResult =
     _eval(
       EXECUTE_FORMULA_PREFIX +
         formulaText +
         "module.exports = " +
-        EXECUTE_FROMULA_POSTFIX(params),
+        EXECUTE_FROMULA_POSTFIX,
       "formula-validate.js",
       {
         Container: TypeDIContainer,
         API_TOKEN: API_TOKEN,
+        param: preparedParams,
       }
     ) || {};
 

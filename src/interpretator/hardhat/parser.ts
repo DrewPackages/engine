@@ -4,10 +4,15 @@ import { ApiCall } from "../../api";
 import { ApiCallDescriptor, isCall } from "../../api/types";
 import { StageInstruction } from "../types";
 import { CommonConfig, ConfigStorage } from "../config";
+import { ValueOrConfigRef, isConfigRef } from "../../params";
 
 type ScriptCall = ApiCall<
-  [string, number, Record<string, string>],
-  { workdir?: string }
+  [
+    ValueOrConfigRef<string>,
+    ValueOrConfigRef<number>,
+    Record<string, ValueOrConfigRef<string>>
+  ],
+  { workdir?: ValueOrConfigRef<string> }
 >;
 
 function isScriptCall(call: ApiCallDescriptor): call is ScriptCall {
@@ -21,6 +26,18 @@ export class HardhatParser extends BaseApiParser {
     private readonly configs: ConfigStorage
   ) {
     super("hardhat", 1);
+  }
+
+  value(valueOrRef?: ValueOrConfigRef<string>): string | undefined {
+    if (valueOrRef == null) {
+      return undefined;
+    }
+
+    if (isConfigRef(valueOrRef)) {
+      return this.configs.resolve(valueOrRef);
+    } else {
+      return valueOrRef;
+    }
   }
 
   public async parse<T extends ApiCallDescriptor>(
@@ -39,12 +56,16 @@ export class HardhatParser extends BaseApiParser {
     call: ScriptCall,
     { privateKey, rpcUrl }: CommonConfig
   ): StageInstruction {
+    const envs = Object.fromEntries(
+      Object.entries(call.args[2]).map(([name, val]) => [name, this.value(val)])
+    );
+
     return {
       type: "task",
       image: "ghcr.io/drewpackages/engine/workers/hardhat",
-      envs: { ...call.args[2], RPC_URL: rpcUrl, PRIVATE_KEY: privateKey },
-      workdir: call.metadata.workdir || ".",
-      cmd: ["run", call.args[0], "--network", "drew"],
+      envs: { ...envs, RPC_URL: rpcUrl, PRIVATE_KEY: privateKey },
+      workdir: this.value(call.metadata.workdir) || ".",
+      cmd: ["run", this.value(call.args[0]), "--network", "drew"],
     };
   }
 }

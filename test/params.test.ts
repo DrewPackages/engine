@@ -1,7 +1,8 @@
 import Container from "typedi";
 import { TestsFetcher } from "./fetcher";
-import { readParams, validateParam } from "../src/params";
+import { addConfigs, readParamsSchema, validateParam } from "../src/params";
 import { validate } from "../src";
+import { ConfigRef } from "../src/params/config-refs";
 
 describe("Engine: Params", () => {
   afterEach(() => {
@@ -22,7 +23,7 @@ describe("Engine: Params", () => {
     };
 
     const doReadParams = () => {
-      const paramsSchema = readParams(formulaText);
+      const paramsSchema = readParamsSchema(formulaText);
       validateParam(params, paramsSchema);
       return paramsSchema;
     };
@@ -44,7 +45,7 @@ describe("Engine: Params", () => {
     };
 
     const doReadParams = () => {
-      const paramsSchema = readParams(formulaText);
+      const paramsSchema = readParamsSchema(formulaText);
       validateParam(params, paramsSchema);
       return paramsSchema;
     };
@@ -67,7 +68,7 @@ describe("Engine: Params", () => {
     };
 
     const doReadParams = () => {
-      const paramsSchema = readParams(formulaText);
+      const paramsSchema = readParamsSchema(formulaText);
       validateParam(params, paramsSchema);
     };
 
@@ -89,7 +90,7 @@ describe("Engine: Params", () => {
     };
 
     const doReadParams = () => {
-      const paramsSchema = readParams(formulaText);
+      const paramsSchema = readParamsSchema(formulaText);
       validateParam(params, paramsSchema);
     };
 
@@ -154,5 +155,25 @@ describe("Engine: Params", () => {
     };
 
     await expect(doValidate()).resolves.toBeDefined();
+  });
+
+  describe("Config refs", () => {
+    it("Should add config refs", async () => {
+      const fetcher = new TestsFetcher();
+
+      const steps = await validate(
+        {
+          formulaName: "params/withConfigRefs",
+          values: {},
+        },
+        fetcher
+      );
+
+      expect(steps).toHaveLength(1);
+      expect(steps[0].method).toEqual("sign");
+      expect(steps[0].args[0]).toBeInstanceOf(ConfigRef);
+      expect(steps[0].args[0]).toHaveProperty("group", "common");
+      expect(steps[0].args[0]).toHaveProperty("key", "rpcUrl");
+    });
   });
 });

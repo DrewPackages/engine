@@ -9,7 +9,7 @@ export default {
     entryFileNames: "[name].js",
   },
   treeshake: "recommended",
-  external: ["reflect-metadata", "typedi", "jsonschema", "eval"],
+  external: ["reflect-metadata", "typedi", "jsonschema", "eval", "zod"],
   plugins: [
     typescript({ declaration: true, outDir: "out" }),
     terser({

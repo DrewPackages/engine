@@ -1,6 +1,7 @@
 import { Container } from "typedi";
 import { API_TOKEN, IApiScheduler } from "./types";
 import { UnknownApiError } from "../errors";
+import { OffchainApi } from "./offchain";
 
 export class Api {
   public readonly schedulers: Map<string, IApiScheduler> = new Map();
@@ -22,9 +23,16 @@ export class Api {
   }
 }
 
-export function instantiateApi(apis: Array<string>) {
+export function instantiateApi(
+  apis: Array<string>,
+  offchainApis: Array<string>
+) {
+  const offchainApi = new OffchainApi(offchainApis);
   const proxiedApi = new Proxy(new Api(apis), {
     get(target, p: string) {
+      if (p === "offchain") {
+        return offchainApi;
+      }
       if (!target.isApiSupported(p)) {
         throw new UnknownApiError(p);
       }

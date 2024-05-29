@@ -1,4 +1,5 @@
 export * from "./hardhat";
+export * from "./docker-compose";
 import "./wallet";
 
 export type { ApiCall } from "./types";

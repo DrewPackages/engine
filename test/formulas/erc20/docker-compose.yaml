@@ -1,0 +1,8 @@
+services:
+  frontend:
+    build:
+      context: manager
+      args:
+        VITE_RPC_URL: ${RPC_URL}
+    ports:
+      - 8080:80

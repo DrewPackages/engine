@@ -1,3 +1,4 @@
+import { ConfigRef } from "src/params/config-refs";
 import {
   ApiConfigAlreadyResolvedError,
   ApiConfigNotResolvedError,
@@ -21,5 +22,13 @@ export class ConfigStorage {
       throw new ApiConfigNotResolvedError(api);
     }
     return this.storage.get(api) as T;
+  }
+
+  resolve(ref: ConfigRef): string {
+    if (!this.storage.has(ref.group)) {
+      throw new ApiConfigNotResolvedError(ref.group);
+    }
+
+    return this.storage.get(ref.group)[ref.key];
   }
 }
