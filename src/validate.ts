@@ -12,6 +12,7 @@ import { IFormulaFetcher } from "./fetcher";
 import { EXECUTE_FORMULA_PREFIX, EXECUTE_FROMULA_POSTFIX } from "./constants";
 import { addConfigs, readParamsSchema, validateParam } from "./params";
 import { DEFAULT_OFFCHAIN_API } from "./api/constants";
+import { runInFunction } from "./utils/function";
 
 type DeployArgs = {
   formulaName: string;
@@ -22,10 +23,6 @@ type DeployArgs = {
 type FormulaExecutionResult = Partial<{
   stages: Array<string>;
 }>;
-
-function evalInContext<T>(formulaText: string): T {
-  return eval(formulaText);
-}
 
 export async function validate(
   args: DeployArgs,
@@ -48,7 +45,7 @@ export async function validate(
   const preparedParams = addConfigs(params || {});
 
   const results: FormulaExecutionResult =
-    evalInContext.call(
+    runInFunction(
       {
         Container: TypeDIContainer,
         API_TOKEN: API_TOKEN,
@@ -59,5 +56,5 @@ export async function validate(
 
   const queue = TypeDIContainer.get(QUEUE_TOKEN);
 
-  return queue.executionScript(results.stages || DEFAULT_STAGES);
+  return queue.executionScript(results?.stages || DEFAULT_STAGES);
 }

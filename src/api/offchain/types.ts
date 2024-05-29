@@ -18,12 +18,12 @@ export interface IOffchainOperationSupported {
 
 export interface IOffchainDeployApi {
   isDeployParamValid(details: object): boolean;
-  deploy(details: object): Promise<void>;
+  deploy(details: object): void;
 }
 
 export interface IOffchainDeployUIApi {
   isDeployUIParamValid(details: object): boolean;
-  deployUI(details: object): Promise<void>;
+  deployUI(details: object): void;
 }
 
 export type IOffchainApi = IOffchainOperationSupported &

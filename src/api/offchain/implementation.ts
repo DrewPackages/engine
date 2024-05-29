@@ -31,7 +31,7 @@ export class OffchainApi {
     return found;
   }
 
-  async deploy(task: DeployOffchainTask): Promise<void> {
+  deploy(task: DeployOffchainTask) {
     let handler: IOffchainApi;
     if (task.handlerType) {
       handler = this.getHandlerByType(task.handlerType);
@@ -53,10 +53,10 @@ export class OffchainApi {
       }
       handler = supported[0];
     }
-    await handler.deploy(task.details);
+    handler.deploy(task.details);
   }
 
-  async ui(task: DeployUITask): Promise<void> {
+  ui(task: DeployUITask) {
     let handler: IOffchainApi;
     if (task.handlerType) {
       handler = this.getHandlerByType(task.handlerType);
@@ -78,6 +78,6 @@ export class OffchainApi {
       }
       handler = supported[0];
     }
-    await handler.deployUI(task.details);
+    handler.deployUI(task.details);
   }
 }

@@ -7,6 +7,7 @@ import {
 } from "./offchain-handlers";
 import { TestsFetcher } from "./fetcher";
 import { validate } from "../src";
+import { OperationNotSupportedByOffchainHandler } from "../src/api/offchain";
 
 describe("Offchain api", () => {
   let fullHandler: jest.MockedObjectDeep<FullHandler>;
@@ -127,5 +128,65 @@ describe("Offchain api", () => {
 
     expect(uiHandler.isDeployUIParamValid).not.toHaveBeenCalled();
     expect(uiHandler.deployUI).not.toHaveBeenCalled();
+  });
+
+  it("Should fail when handler doesn't support an operation", async () => {
+    await expect(
+      validate(
+        {
+          formulaName: "offchain/uiSpecifiedToWrongHandler",
+          apis: [],
+          offchainHandlers: ["deployment", "ui"],
+        },
+        fetcher
+      )
+    ).rejects.toThrow();
+
+    expect(deploymentHandler.isDeployUISupported).toHaveBeenCalled();
+
+    await expect(
+      validate(
+        {
+          formulaName: "offchain/deploymentSpecifiedToWrongHandler",
+          apis: [],
+          offchainHandlers: ["deployment", "ui"],
+        },
+        fetcher
+      )
+    ).rejects.toThrow();
+
+    expect(uiHandler.isDeploySupported).toHaveBeenCalled();
+  });
+
+  it("Should fail when ui handler doesn't support an operation params", async () => {
+    await expect(
+      validate(
+        {
+          formulaName: "offchain/uiSpecifiedWithWrongParam",
+          apis: [],
+          offchainHandlers: ["deployment", "ui"],
+        },
+        fetcher
+      )
+    ).rejects.toThrow();
+
+    expect(uiHandler.isDeployUISupported).toHaveBeenCalled();
+    expect(uiHandler.isDeployUIParamValid).toHaveReturnedWith(false);
+  });
+
+  it("Should fail when deployment handler doesn't support an operation params", async () => {
+    await expect(
+      validate(
+        {
+          formulaName: "offchain/deploymentSpecifiedToWrongHandler",
+          apis: [],
+          offchainHandlers: ["deployment", "ui"],
+        },
+        fetcher
+      )
+    ).rejects.toThrow();
+
+    expect(deploymentHandler.isDeploySupported).toHaveBeenCalled();
+    expect(deploymentHandler.isDeployParamValid).toHaveReturnedWith(false);
   });
 });

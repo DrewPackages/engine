@@ -15,9 +15,9 @@ export class FullHandler implements IOffchainApi {
     );
   }
 
-  async deploy(details: object): Promise<void> {}
+  deploy(details: object) {}
 
-  async deployUI(details: object): Promise<void> {}
+  deployUI(details: object) {}
 
   isDeploySupported(): boolean {
     return true;
@@ -51,7 +51,7 @@ export class DeploymentHandler implements IOffchainApi {
     );
   }
 
-  async deploy(details: object): Promise<void> {}
+  deploy(details: object) {}
 
   isDeploySupported(): boolean {
     return true;
@@ -67,7 +67,7 @@ export class UIHandler implements IOffchainApi {
     return "ui-offchain";
   }
 
-  async deployUI(details: object): Promise<void> {}
+  deployUI(details: object) {}
 
   isDeploySupported(): boolean {
     return false;

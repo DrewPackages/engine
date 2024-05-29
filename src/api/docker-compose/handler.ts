@@ -38,7 +38,7 @@ export class DockerComposeScheduler
     return result.success;
   }
 
-  async deploy(details: object): Promise<void> {
+  deploy(details: object) {
     const parsedDetails = DeployRequestDetailsSchema.parse(details);
     this.up(parsedDetails);
   }

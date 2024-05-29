@@ -1,12 +1,16 @@
 import { Schema } from "jsonschema";
 import { InvalidParamSchemaError } from "../errors";
+import { runInFunction } from "../utils/function";
 
 const PARAMS_SCHEMA_VAR_NAME = "paramsSchema";
 const DRAFT_URL = "https://json-schema.org/draft/2020-12/schema";
 
 export function readParamsSchema(formulaText: string): Schema | undefined {
   const paramTypeObject: Schema = formulaText.includes(PARAMS_SCHEMA_VAR_NAME)
-    ? eval(formulaText + "\n" + PARAMS_SCHEMA_VAR_NAME + ";")
+    ? runInFunction(
+        {},
+        formulaText + "\nreturn " + PARAMS_SCHEMA_VAR_NAME + ";"
+      )
     : {};
 
   if (
