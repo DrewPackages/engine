@@ -6,7 +6,7 @@ import z from "zod";
 import { ConfigRefSchema } from "../../params";
 
 export const DeployRequestDetailsSchema = z.object({
-  path: z.string().or(ConfigRefSchema),
+  path: z.string().or(ConfigRefSchema).optional(),
   envs: z.record(z.string(), z.string().or(ConfigRefSchema)).optional(),
 });
 

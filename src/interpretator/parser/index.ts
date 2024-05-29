@@ -1,14 +1,29 @@
 import { Token } from "typedi";
 import { ApiCallDescriptor } from "../../api/types";
 import { StageInstruction } from "../types";
+import { ValueOrConfigRef, isConfigRef } from "../../params";
+import { ConfigStorage } from "../config";
 
 export const API_PARSER_TOKEN = new Token<BaseApiParser>("API_PARSER");
 
 export abstract class BaseApiParser {
   constructor(
     public readonly apiGroup: string,
-    public readonly apiVersion: number
+    public readonly apiVersion: number,
+    protected readonly configs: ConfigStorage
   ) {}
+
+  value(valueOrRef?: ValueOrConfigRef<string>): string | undefined {
+    if (valueOrRef == null) {
+      return undefined;
+    }
+
+    if (isConfigRef(valueOrRef)) {
+      return this.configs.resolve(valueOrRef);
+    } else {
+      return valueOrRef;
+    }
+  }
 
   public isCallGroupSupported(call: ApiCallDescriptor): boolean {
     return call.group === this.apiGroup && call.version === this.apiVersion;

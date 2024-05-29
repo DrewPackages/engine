@@ -1,10 +1,10 @@
-import { Inject, Service } from "typedi";
+import { Inject, Container } from "typedi";
 import { API_PARSER_TOKEN, BaseApiParser } from "../../interpretator/parser";
 import { ApiCall } from "../../api";
 import { ApiCallDescriptor, isCall } from "../../api/types";
 import { StageInstruction } from "../types";
 import { CommonConfig, ConfigStorage } from "../config";
-import { ValueOrConfigRef, isConfigRef } from "../../params";
+import { ValueOrConfigRef } from "../../params";
 
 type ScriptCall = ApiCall<
   [
@@ -19,25 +19,12 @@ function isScriptCall(call: ApiCallDescriptor): call is ScriptCall {
   return isCall("hardhat", 1, "script", call);
 }
 
-@Service(API_PARSER_TOKEN)
 export class HardhatParser extends BaseApiParser {
   constructor(
     @Inject()
-    private readonly configs: ConfigStorage
+    configs: ConfigStorage
   ) {
-    super("hardhat", 1);
-  }
-
-  value(valueOrRef?: ValueOrConfigRef<string>): string | undefined {
-    if (valueOrRef == null) {
-      return undefined;
-    }
-
-    if (isConfigRef(valueOrRef)) {
-      return this.configs.resolve(valueOrRef);
-    } else {
-      return valueOrRef;
-    }
+    super("hardhat", 1, configs);
   }
 
   public async parse<T extends ApiCallDescriptor>(
@@ -69,3 +56,9 @@ export class HardhatParser extends BaseApiParser {
     };
   }
 }
+
+Container.set({
+  multiple: true,
+  type: HardhatParser,
+  id: API_PARSER_TOKEN,
+});

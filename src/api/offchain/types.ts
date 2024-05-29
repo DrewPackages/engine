@@ -1,13 +1,13 @@
 export type DeployOffchainTask = {
   type: "deploy";
   handlerType?: string;
-  deploymentDetails: object;
+  details: object;
 };
 
 export type DeployUITask = {
   type: "ui";
   handlerType?: string;
-  uiDetails: object;
+  details: object;
 };
 
 export interface IOffchainOperationSupported {

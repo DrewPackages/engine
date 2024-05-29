@@ -5,7 +5,7 @@ import {
   OperationNotSupportedByOffchainHandler,
   OperationNotSupportedByOffchainHandlers,
 } from "./errors";
-import { DeployOffchainTask, IOffchainApi } from "./types";
+import { DeployOffchainTask, DeployUITask, IOffchainApi } from "./types";
 
 export class OffchainApi {
   private readonly handlers: Array<IOffchainApi> = [];
@@ -43,18 +43,17 @@ export class OffchainApi {
       }
     } else {
       const supported = this.handlers.filter(
-        (a) =>
-          a.isDeploySupported && a.isDeployParamValid(task.deploymentDetails)
+        (a) => a.isDeploySupported && a.isDeployParamValid(task.details)
       );
       if (supported.length === 0) {
         throw new OperationNotSupportedByOffchainHandlers("deploy");
       }
       handler = supported[0];
     }
-    await handler.deploy(task.deploymentDetails);
+    await handler.deploy(task.details);
   }
 
-  async ui(task: DeployOffchainTask): Promise<void> {
+  async ui(task: DeployUITask): Promise<void> {
     let handler: IOffchainApi;
     if (task.handlerType) {
       handler = this.getHandlerByType(task.handlerType);
@@ -66,15 +65,13 @@ export class OffchainApi {
       }
     } else {
       const supported = this.handlers.filter(
-        (a) =>
-          a.isDeployUISupported &&
-          a.isDeployUIParamValid(task.deploymentDetails)
+        (a) => a.isDeployUISupported && a.isDeployUIParamValid(task.details)
       );
       if (supported.length === 0) {
         throw new OperationNotSupportedByOffchainHandlers("ui");
       }
       handler = supported[0];
     }
-    await handler.deployUI(task.deploymentDetails);
+    await handler.deployUI(task.details);
   }
 }
