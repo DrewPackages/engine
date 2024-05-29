@@ -12,10 +12,7 @@ describe("Engine: Validate", () => {
     expect.assertions(3);
     const fetcher = new TestsFetcher();
 
-    const script = await validate(
-      { formulaName: "validate/2steps", values: {} },
-      fetcher
-    );
+    const script = await validate({ formulaName: "validate/2steps" }, fetcher);
 
     expect(script).toHaveLength(2);
     expect(script[0].group).toEqual("wallet");
@@ -27,7 +24,7 @@ describe("Engine: Validate", () => {
     const fetcher = new TestsFetcher();
 
     const script = await validate(
-      { formulaName: "validate/2stepsReorder", values: {} },
+      { formulaName: "validate/2stepsReorder" },
       fetcher
     );
 
@@ -41,7 +38,7 @@ describe("Engine: Validate", () => {
     const fetcher = new TestsFetcher();
 
     const validation = validate(
-      { formulaName: "validate/unknownApi", values: {} },
+      { formulaName: "validate/unknownApi" },
       fetcher
     );
 

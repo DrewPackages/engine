@@ -20,11 +20,11 @@ export class OffchainApi {
   }
 
   get isUIDeployable(): boolean {
-    return this.handlers.findIndex((a) => a.isDeployUISupported) !== -1;
+    return this.handlers.findIndex((a) => a.isDeployUISupported()) !== -1;
   }
 
   private getHandlerByType(handlerName: string): IOffchainApi {
-    const found = this.handlers.find((a) => a.handlerName === handlerName);
+    const found = this.handlers.find((a) => a.handlerName() === handlerName);
     if (!found) {
       throw new OffchainHandlerNotFound(handlerName);
     }
@@ -35,7 +35,10 @@ export class OffchainApi {
     let handler: IOffchainApi;
     if (task.handlerType) {
       handler = this.getHandlerByType(task.handlerType);
-      if (!handler.isDeploySupported) {
+      if (
+        !handler.isDeploySupported() ||
+        !handler.isDeployParamValid(task.details)
+      ) {
         throw new OperationNotSupportedByOffchainHandler(
           task.handlerType,
           "deploy"
@@ -43,7 +46,7 @@ export class OffchainApi {
       }
     } else {
       const supported = this.handlers.filter(
-        (a) => a.isDeploySupported && a.isDeployParamValid(task.details)
+        (a) => a.isDeploySupported() && a.isDeployParamValid(task.details)
       );
       if (supported.length === 0) {
         throw new OperationNotSupportedByOffchainHandlers("deploy");
@@ -57,7 +60,10 @@ export class OffchainApi {
     let handler: IOffchainApi;
     if (task.handlerType) {
       handler = this.getHandlerByType(task.handlerType);
-      if (!handler.isDeployUISupported) {
+      if (
+        !handler.isDeployUISupported() ||
+        !handler.isDeployUIParamValid(task.details)
+      ) {
         throw new OperationNotSupportedByOffchainHandler(
           task.handlerType,
           "ui"
@@ -65,7 +71,7 @@ export class OffchainApi {
       }
     } else {
       const supported = this.handlers.filter(
-        (a) => a.isDeployUISupported && a.isDeployUIParamValid(task.details)
+        (a) => a.isDeployUISupported() && a.isDeployUIParamValid(task.details)
       );
       if (supported.length === 0) {
         throw new OperationNotSupportedByOffchainHandlers("ui");

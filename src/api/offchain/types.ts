@@ -11,9 +11,9 @@ export type DeployUITask = {
 };
 
 export interface IOffchainOperationSupported {
-  get isDeploySupported(): boolean;
-  get isDeployUISupported(): boolean;
-  get handlerName(): string;
+  isDeploySupported(): boolean;
+  isDeployUISupported(): boolean;
+  handlerName(): string;
 }
 
 export interface IOffchainDeployApi {

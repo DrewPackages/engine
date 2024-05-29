@@ -14,9 +14,10 @@ import { addConfigs, readParamsSchema, validateParam } from "./params";
 import _eval from "eval";
 import { DEFAULT_OFFCHAIN_API } from "./api/constants";
 
-type DeployArgs<T extends object = {}> = {
+type DeployArgs = {
   formulaName: string;
-  values: T;
+  apis?: Array<string>;
+  offchainHandlers?: Array<string>;
 };
 
 type FormulaExecutionResult = Partial<{
@@ -28,7 +29,10 @@ export async function validate(
   fetcher: IFormulaFetcher,
   params?: object
 ): Promise<Array<ApiCall>> {
-  instantiateApi(DEFAULT_APIS, DEFAULT_OFFCHAIN_API);
+  instantiateApi(
+    args.apis != null ? args.apis : DEFAULT_APIS,
+    args.offchainHandlers != null ? args.offchainHandlers : DEFAULT_OFFCHAIN_API
+  );
 
   const formulaText = await fetcher.fetchFormulaFileText(
     args.formulaName,

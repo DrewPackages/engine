@@ -21,15 +21,15 @@ export class DockerComposeScheduler
     super(queue, "dockerCompose", "offchain");
   }
 
-  get handlerName(): string {
+  handlerName(): string {
     return "docker-compose";
   }
 
-  get isDeploySupported(): boolean {
+  isDeploySupported(): boolean {
     return true;
   }
 
-  get isDeployUISupported(): boolean {
+  isDeployUISupported(): boolean {
     return false;
   }
 

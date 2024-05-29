@@ -1,6 +1,6 @@
 import Container from "typedi";
 import { TestsFetcher } from "./fetcher";
-import { addConfigs, readParamsSchema, validateParam } from "../src/params";
+import { readParamsSchema, validateParam } from "../src/params";
 import { validate } from "../src";
 import { ConfigRef } from "../src/params/config-refs";
 
@@ -108,7 +108,6 @@ describe("Engine: Params", () => {
     const steps = await validate(
       {
         formulaName: "params/regularParams",
-        values: {},
       },
       fetcher,
       params
@@ -130,7 +129,6 @@ describe("Engine: Params", () => {
     const steps = await validate(
       {
         formulaName: "params/regularParams",
-        values: {},
       },
       fetcher,
       params
@@ -148,7 +146,6 @@ describe("Engine: Params", () => {
       return validate(
         {
           formulaName: "params/withoutParams",
-          values: {},
         },
         fetcher
       );
@@ -164,7 +161,6 @@ describe("Engine: Params", () => {
       const steps = await validate(
         {
           formulaName: "params/withConfigRefs",
-          values: {},
         },
         fetcher
       );
