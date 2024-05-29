@@ -11,7 +11,6 @@ import {
 import { IFormulaFetcher } from "./fetcher";
 import { EXECUTE_FORMULA_PREFIX, EXECUTE_FROMULA_POSTFIX } from "./constants";
 import { addConfigs, readParamsSchema, validateParam } from "./params";
-import _eval from "eval";
 import { DEFAULT_OFFCHAIN_API } from "./api/constants";
 
 type DeployArgs = {
@@ -23,6 +22,10 @@ type DeployArgs = {
 type FormulaExecutionResult = Partial<{
   stages: Array<string>;
 }>;
+
+function evalInContext<T>(formulaText: string): T {
+  return eval(formulaText);
+}
 
 export async function validate(
   args: DeployArgs,
@@ -45,17 +48,13 @@ export async function validate(
   const preparedParams = addConfigs(params || {});
 
   const results: FormulaExecutionResult =
-    _eval(
-      EXECUTE_FORMULA_PREFIX +
-        formulaText +
-        "module.exports = " +
-        EXECUTE_FROMULA_POSTFIX,
-      "formula-validate.js",
+    evalInContext.call(
       {
         Container: TypeDIContainer,
         API_TOKEN: API_TOKEN,
         param: preparedParams,
-      }
+      },
+      EXECUTE_FORMULA_PREFIX + formulaText + EXECUTE_FROMULA_POSTFIX
     ) || {};
 
   const queue = TypeDIContainer.get(QUEUE_TOKEN);
