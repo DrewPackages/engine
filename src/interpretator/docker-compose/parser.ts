@@ -2,14 +2,11 @@ import { Inject, Container } from "typedi";
 import { API_PARSER_TOKEN, BaseApiParser } from "../parser";
 import { ApiCall } from "../../api";
 import { ApiCallDescriptor, isCall } from "../../api/types";
-import { StageInstruction } from "../types";
+import { StageInstruction, ValueRef } from "../types";
 import { ConfigStorage } from "../config";
-import { ValueOrConfigRef } from "../../params";
+import { IStateStorageFetcher, STATE_STORAGE_TOKEN } from "../../state";
 
-type UpCall = ApiCall<
-  [ValueOrConfigRef<string>, Record<string, ValueOrConfigRef<string>>],
-  {}
->;
+type UpCall = ApiCall<[ValueRef<string>, Record<string, ValueRef<string>>], {}>;
 
 function isUpCall(call: ApiCallDescriptor): call is UpCall {
   return isCall("dockerCompose", 1, "up", call);
@@ -18,9 +15,11 @@ function isUpCall(call: ApiCallDescriptor): call is UpCall {
 export class DockerComposeParser extends BaseApiParser {
   constructor(
     @Inject()
-    configs: ConfigStorage
+    configs: ConfigStorage,
+    @Inject(STATE_STORAGE_TOKEN)
+    state: IStateStorageFetcher
   ) {
-    super("dockerCompose", 1, configs);
+    super("dockerCompose", 1, configs, state);
   }
 
   public async parse<T extends ApiCallDescriptor>(

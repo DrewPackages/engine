@@ -1,0 +1,26 @@
+import z from "zod";
+
+export type ScheduleOutput = {
+  type: "scheduler-output";
+  id: string;
+};
+
+export const SchedulerOutputSchema = z.object({
+  type: z.literal("scheduler-output"),
+  id: z.string(),
+});
+
+export function isScheduleOutput(smtn: any): smtn is ScheduleOutput {
+  return SchedulerOutputSchema.safeParse(smtn).success;
+}
+
+export type IStateStorageRegistrer = {
+  registerOutputs(outputs: Array<ScheduleOutput>);
+};
+
+export type IStateStorageFetcher = {
+  isOutputResolved(outputId: string): boolean;
+  getOutputValue<T>(outputId: string): T;
+};
+
+export type IStateStorage = IStateStorageRegistrer & IStateStorageFetcher;

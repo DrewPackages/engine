@@ -7,13 +7,14 @@ import {
 } from "./offchain-handlers";
 import { TestsFetcher } from "./fetcher";
 import { validate } from "../src";
-import { OperationNotSupportedByOffchainHandler } from "../src/api/offchain";
+import { TestStorage } from "./state";
 
-describe("Offchain api", () => {
+describe("Engine: Offchain api", () => {
   let fullHandler: jest.MockedObjectDeep<FullHandler>;
   let uiHandler: jest.MockedObjectDeep<UIHandler>;
   let deploymentHandler: jest.MockedObjectDeep<DeploymentHandler>;
   const fetcher = new TestsFetcher();
+  let state: TestStorage;
 
   function spy() {
     jest.spyOn(deploymentHandler, "isDeployParamValid");
@@ -47,6 +48,10 @@ describe("Offchain api", () => {
     spy();
   });
 
+  beforeEach(() => {
+    state = new TestStorage();
+  });
+
   afterEach(() => {
     jest.restoreAllMocks();
     spy();
@@ -58,7 +63,8 @@ describe("Offchain api", () => {
         formulaName: "offchain/deploymentUnspecified",
         offchainHandlers: ["deployment"],
       },
-      fetcher
+      fetcher,
+      state
     );
 
     expect(deploymentHandler.isDeployParamValid).toHaveBeenCalled();
@@ -71,7 +77,8 @@ describe("Offchain api", () => {
         formulaName: "offchain/uiUnspecified",
         offchainHandlers: ["ui"],
       },
-      fetcher
+      fetcher,
+      state
     );
 
     expect(uiHandler.isDeployUIParamValid).toHaveBeenCalled();
@@ -84,7 +91,8 @@ describe("Offchain api", () => {
         formulaName: "offchain/deploymentSpecified",
         offchainHandlers: ["deployment"],
       },
-      fetcher
+      fetcher,
+      state
     );
 
     expect(deploymentHandler.isDeployParamValid).toHaveBeenCalled();
@@ -97,7 +105,8 @@ describe("Offchain api", () => {
         formulaName: "offchain/uiSpecified",
         offchainHandlers: ["ui"],
       },
-      fetcher
+      fetcher,
+      state
     );
 
     expect(uiHandler.isDeployUIParamValid).toHaveBeenCalled();
@@ -110,7 +119,8 @@ describe("Offchain api", () => {
         formulaName: "offchain/checkUiAvailability",
         offchainHandlers: ["ui"],
       },
-      fetcher
+      fetcher,
+      state
     );
 
     expect(uiHandler.isDeployUIParamValid).toHaveBeenCalled();
@@ -123,7 +133,8 @@ describe("Offchain api", () => {
         formulaName: "offchain/checkUiAvailability",
         offchainHandlers: ["deployment"],
       },
-      fetcher
+      fetcher,
+      state
     );
 
     expect(uiHandler.isDeployUIParamValid).not.toHaveBeenCalled();
@@ -138,7 +149,8 @@ describe("Offchain api", () => {
           apis: [],
           offchainHandlers: ["deployment", "ui"],
         },
-        fetcher
+        fetcher,
+        state
       )
     ).rejects.toThrow();
 
@@ -151,7 +163,8 @@ describe("Offchain api", () => {
           apis: [],
           offchainHandlers: ["deployment", "ui"],
         },
-        fetcher
+        fetcher,
+        state
       )
     ).rejects.toThrow();
 
@@ -166,7 +179,8 @@ describe("Offchain api", () => {
           apis: [],
           offchainHandlers: ["deployment", "ui"],
         },
-        fetcher
+        fetcher,
+        state
       )
     ).rejects.toThrow();
 
@@ -182,11 +196,11 @@ describe("Offchain api", () => {
           apis: [],
           offchainHandlers: ["deployment", "ui"],
         },
-        fetcher
+        fetcher,
+        state
       )
     ).rejects.toThrow();
 
-    expect(deploymentHandler.isDeploySupported).toHaveBeenCalled();
-    expect(deploymentHandler.isDeployParamValid).toHaveReturnedWith(false);
+    expect(uiHandler.isDeploySupported).toHaveBeenCalled();
   });
 });

@@ -2,12 +2,13 @@ import { IQueue, QUEUE_TOKEN } from "../../queue/types";
 import { IApiScheduler } from "../types";
 import { BaseScheduler } from "../scheduler";
 import { Inject, Service } from "typedi";
+import { ValueRef } from "../../interpretator";
 
 export type ScriptRequest = {
-  path: string;
+  path: ValueRef<string>;
   account?: number;
-  envs?: Record<string, string>;
-  workdir?: string;
+  envs?: Record<string, ValueRef<string>>;
+  workdir?: ValueRef<string>;
 };
 
 @Service("api-hardhat")

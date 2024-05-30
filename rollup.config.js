@@ -11,7 +11,12 @@ export default {
   treeshake: "recommended",
   external: ["reflect-metadata", "typedi", "jsonschema", "zod"],
   plugins: [
-    typescript({ declaration: true, outDir: "out" }),
+    typescript({
+      declaration: true,
+      outDir: "out",
+      emitDecoratorMetadata: true,
+      experimentalDecorators: true,
+    }),
     terser({
       format: {
         comments: "some",

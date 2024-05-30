@@ -5,3 +5,9 @@ export { validate } from "./validate";
 export { parse } from "./parse";
 export { IFormulaFetcher } from "./fetcher";
 export { IEnvironmentResolver, type StageInstruction } from "./interpretator";
+export type {
+  IStateStorage,
+  IStateStorageFetcher,
+  IStateStorageRegistrer,
+  ScheduleOutput,
+} from "./state";

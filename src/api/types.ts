@@ -1,3 +1,4 @@
+import { ScheduleOutput } from "src/state";
 import { IQueue } from "../queue/types";
 import { Token } from "typedi";
 
@@ -14,6 +15,7 @@ export type ApiCall<
   args: A;
   metadata: M;
   stage: string;
+  outputs: Array<ScheduleOutput>;
 };
 
 export type ApiMethodContext = { queue: IQueue };

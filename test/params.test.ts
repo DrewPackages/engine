@@ -3,15 +3,21 @@ import { TestsFetcher } from "./fetcher";
 import { readParamsSchema, validateParam } from "../src/params";
 import { validate } from "../src";
 import { ConfigRef } from "../src/params/config-refs";
+import { TestStorage } from "./state";
 
 describe("Engine: Params", () => {
+  const fetcher = new TestsFetcher();
+  let state: TestStorage;
+
+  beforeEach(() => {
+    state = new TestStorage();
+  });
+
   afterEach(() => {
     Container.reset();
   });
 
   it("Should validate required params with schema", async () => {
-    const fetcher = new TestsFetcher();
-
     const formulaText = await fetcher.fetchFormulaFileText(
       "params/regularParams",
       "formula.js"
@@ -32,8 +38,6 @@ describe("Engine: Params", () => {
   });
 
   it("Should throw on invalid params", async () => {
-    const fetcher = new TestsFetcher();
-
     const formulaText = await fetcher.fetchFormulaFileText(
       "params/regularParams",
       "formula.js"
@@ -54,8 +58,6 @@ describe("Engine: Params", () => {
   });
 
   it("Should throw on unknown params", async () => {
-    const fetcher = new TestsFetcher();
-
     const formulaText = await fetcher.fetchFormulaFileText(
       "params/regularParams",
       "formula.js"
@@ -76,8 +78,6 @@ describe("Engine: Params", () => {
   });
 
   it("Should throw on params without schema", async () => {
-    const fetcher = new TestsFetcher();
-
     const formulaText = await fetcher.fetchFormulaFileText(
       "params/withoutParams",
       "formula.js"
@@ -98,8 +98,6 @@ describe("Engine: Params", () => {
   });
 
   it("Should use params in formula", async () => {
-    const fetcher = new TestsFetcher();
-
     const params = {
       message: "0x123",
       iterations: 3,
@@ -110,6 +108,7 @@ describe("Engine: Params", () => {
         formulaName: "params/regularParams",
       },
       fetcher,
+      state,
       params
     );
 
@@ -118,8 +117,6 @@ describe("Engine: Params", () => {
   });
 
   it("Should use optional params", async () => {
-    const fetcher = new TestsFetcher();
-
     const params = {
       message: "0x123",
       iterations: 3,
@@ -131,6 +128,7 @@ describe("Engine: Params", () => {
         formulaName: "params/regularParams",
       },
       fetcher,
+      state,
       params
     );
 
@@ -140,14 +138,13 @@ describe("Engine: Params", () => {
   });
 
   it("Should execute formula without params", async () => {
-    const fetcher = new TestsFetcher();
-
     const doValidate = async () => {
       return validate(
         {
           formulaName: "params/withoutParams",
         },
-        fetcher
+        fetcher,
+        state
       );
     };
 
@@ -156,13 +153,12 @@ describe("Engine: Params", () => {
 
   describe("Config refs", () => {
     it("Should add config refs", async () => {
-      const fetcher = new TestsFetcher();
-
       const steps = await validate(
         {
           formulaName: "params/withConfigRefs",
         },
-        fetcher
+        fetcher,
+        state
       );
 
       expect(steps).toHaveLength(1);

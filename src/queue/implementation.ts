@@ -1,7 +1,8 @@
 import { ApiCall } from "../api/types";
 import { IQueue, QUEUE_TOKEN } from "./types";
 import { UnknownStageError } from "../errors/index";
-import { Service } from "typedi";
+import { Inject, Service } from "typedi";
+import { IStateStorageRegistrer, STATE_STORAGE_TOKEN } from "../state";
 
 function checkStages(items: Array<ApiCall>, stages: Array<string>) {
   for (let callIndex = 0; callIndex < items.length; callIndex++) {
@@ -38,8 +39,14 @@ function sortStages(
 export class QueueImpl implements IQueue {
   private items: Array<ApiCall> = [];
 
+  constructor(
+    @Inject(STATE_STORAGE_TOKEN)
+    private readonly state: IStateStorageRegistrer
+  ) {}
+
   schedule(call: ApiCall) {
     this.items.push(call);
+    this.state.registerOutputs(call.outputs);
   }
 
   executionScript(stagesOrder: Array<string>): ApiCall[] {

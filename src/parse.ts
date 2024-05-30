@@ -10,12 +10,16 @@ import {
   StageInstruction,
 } from "./interpretator";
 import { UnknownApiCallError } from "./errors";
+import { IStateStorage, STATE_STORAGE_TOKEN } from "./state";
 
 export async function parse(
   calls: Array<ApiCall>,
-  env: IEnvironmentResolver
+  env: IEnvironmentResolver,
+  state: IStateStorage
 ): Promise<Array<StageInstruction>> {
   Container.set(ENVIRONMENT_RESOLVER_TOKEN, env);
+  Container.set(STATE_STORAGE_TOKEN, state);
+
   await resolveConfigs();
 
   const parsers = Container.getMany<BaseApiParser>(API_PARSER_TOKEN);

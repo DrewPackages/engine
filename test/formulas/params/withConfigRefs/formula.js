@@ -1,5 +1,5 @@
 function deploy(params) {
-  api.wallet.sign({
+  api.foundry.sign({
     msg: params.config.common.rpcUrl(),
   });
 }

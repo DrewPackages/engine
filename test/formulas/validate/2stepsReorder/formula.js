@@ -3,7 +3,7 @@ function deploy() {
     path: "./scripts/deploy.ts",
   });
 
-  api.wallet.sign({
+  api.foundry.sign({
     msg: "0x123123124142",
   });
 }

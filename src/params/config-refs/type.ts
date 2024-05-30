@@ -11,6 +11,7 @@ export class ConfigRef {
 }
 
 export const ConfigRefSchema = z.object({
+  type: z.literal("config-ref"),
   group: z.string(),
   key: z.string(),
 });
@@ -18,5 +19,3 @@ export const ConfigRefSchema = z.object({
 export function isConfigRef(smtn: any): smtn is ConfigRef {
   return ConfigRefSchema.safeParse(smtn).success;
 }
-
-export type ValueOrConfigRef<T> = T | ConfigRef;

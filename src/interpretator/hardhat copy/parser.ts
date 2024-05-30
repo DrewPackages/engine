@@ -1,5 +1,5 @@
 import { Inject, Container } from "typedi";
-import { API_PARSER_TOKEN, BaseApiParser } from "../../interpretator/parser";
+import { API_PARSER_TOKEN, BaseApiParser } from "../parser";
 import { ApiCall } from "../../api";
 import { ApiCallDescriptor, isCall } from "../../api/types";
 import { StageInstruction, ValueRef } from "../types";

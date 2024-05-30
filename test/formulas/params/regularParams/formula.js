@@ -16,12 +16,12 @@ const paramsSchema = {
 
 function deploy(params) {
   for (let index = 0; index < params.iterations; index++) {
-    api.wallet.sign({
+    api.foundry.sign({
       msg: params.message,
     });
   }
   if (params.tail) {
-    api.wallet.sign({
+    api.foundry.sign({
       msg: "tail",
     });
   }

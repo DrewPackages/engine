@@ -2,6 +2,7 @@ import { Container } from "typedi";
 import { API_TOKEN, IApiScheduler } from "./types";
 import { UnknownApiError } from "../errors";
 import { OffchainApi } from "./offchain";
+import { IStateStorage, STATE_STORAGE_TOKEN } from "../state";
 
 export class Api {
   public readonly schedulers: Map<string, IApiScheduler> = new Map();

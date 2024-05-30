@@ -1,6 +1,6 @@
 export * from "./hardhat";
 export * from "./docker-compose";
-import "./wallet";
+import "./foundry";
 
 export type { ApiCall } from "./types";
 export { API_TOKEN } from "./types";

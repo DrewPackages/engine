@@ -13,6 +13,7 @@ import { EXECUTE_FORMULA_PREFIX, EXECUTE_FROMULA_POSTFIX } from "./constants";
 import { addConfigs, readParamsSchema, validateParam } from "./params";
 import { DEFAULT_OFFCHAIN_API } from "./api/constants";
 import { runInFunction } from "./utils/function";
+import { IStateStorage, STATE_STORAGE_TOKEN } from "./state";
 
 type DeployArgs = {
   formulaName: string;
@@ -27,8 +28,11 @@ type FormulaExecutionResult = Partial<{
 export async function validate(
   args: DeployArgs,
   fetcher: IFormulaFetcher,
+  state: IStateStorage,
   params?: object
 ): Promise<Array<ApiCall>> {
+  TypeDIContainer.set(STATE_STORAGE_TOKEN, state);
+
   instantiateApi(
     args.apis != null ? args.apis : DEFAULT_APIS,
     args.offchainHandlers != null ? args.offchainHandlers : DEFAULT_OFFCHAIN_API
