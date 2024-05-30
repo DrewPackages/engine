@@ -38,7 +38,7 @@ export class FoundryParser extends BaseApiParser {
 
   private parseSign(
     call: SignCall,
-    { privateKey, rpcUrl }: CommonConfig
+    { privateKey }: CommonConfig
   ): StageInstruction {
     return {
       type: "task",
