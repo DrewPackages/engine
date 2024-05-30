@@ -1,4 +1,4 @@
-import { ApiMethodContext } from "../types";
+import { ApiMethodContext, OutputInfo } from "../types";
 import { IQueue } from "../../queue/types";
 import { type ScheduleOutput } from "../../state";
 
@@ -13,12 +13,15 @@ export class BaseScheduler implements ApiMethodContext {
 
   private getCallOutputIds(
     method: string,
-    outputNames: Array<string>
-  ): Array<string> {
+    outputNames: Array<OutputInfo>
+  ): Array<Omit<OutputInfo, "name"> & { id: string }> {
     const callTypePrefix = `${this.group}/${this.version}/${method}:${this.scheduledCounter}`;
     this.scheduledCounter += 1;
 
-    return outputNames.map((o) => `${callTypePrefix}:${o}`);
+    return outputNames.map(({ name, ...o }) => ({
+      id: `${callTypePrefix}:${name}`,
+      ...o,
+    }));
   }
 
   protected schedule(
@@ -26,12 +29,12 @@ export class BaseScheduler implements ApiMethodContext {
     args: Array<any>,
     metadata: object,
     stage?: string,
-    outputNames?: Array<string>
+    outputNames?: Array<OutputInfo>
   ): Array<ScheduleOutput> {
     const outputs: Array<ScheduleOutput> = outputNames
-      ? this.getCallOutputIds(method, outputNames).map((id) => ({
+      ? this.getCallOutputIds(method, outputNames).map((o) => ({
           type: "scheduler-output",
-          id,
+          ...o,
         }))
       : [];
 

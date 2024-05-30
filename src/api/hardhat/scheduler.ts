@@ -1,5 +1,5 @@
 import { IQueue, QUEUE_TOKEN } from "../../queue/types";
-import { IApiScheduler } from "../types";
+import { IApiScheduler, OutputInfo } from "../types";
 import { BaseScheduler } from "../scheduler";
 import { Inject, Service } from "typedi";
 import { ValueRef } from "../../interpretator";
@@ -9,6 +9,7 @@ export type ScriptRequest = {
   account?: number;
   envs?: Record<string, ValueRef<string>>;
   workdir?: ValueRef<string>;
+  outputs?: Array<OutputInfo>;
 };
 
 @Service("api-hardhat")
@@ -21,8 +22,14 @@ export class HardhatScheduler
   }
 
   script(arg: ScriptRequest) {
-    this.schedule("script", [arg.path, arg.account || 1, arg.envs || {}], {
-      workdir: arg.workdir,
-    });
+    this.schedule(
+      "script",
+      [arg.path, arg.account || 1, arg.envs || {}],
+      {
+        workdir: arg.workdir,
+      },
+      "onchain",
+      arg.outputs
+    );
   }
 }

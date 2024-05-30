@@ -1,8 +1,10 @@
+import { OutputExtract } from "src/api/types";
 import z from "zod";
 
 export type ScheduleOutput = {
   type: "scheduler-output";
   id: string;
+  extract?: OutputExtract;
 };
 
 export const SchedulerOutputSchema = z.object({

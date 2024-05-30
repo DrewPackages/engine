@@ -25,7 +25,7 @@ export class FoundryScheduler
       [arg.msg, arg.account || 1],
       {},
       "preparements",
-      ["signature"]
+      [{ name: "signature", extract: { type: "stdout" } }]
     );
 
     return signatureOutput;

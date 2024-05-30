@@ -18,6 +18,22 @@ export type ApiCall<
   outputs: Array<ScheduleOutput>;
 };
 
+export type OutputInfo = {
+  name: string;
+  extract?: OutputExtract;
+};
+
+export type OutputExtract =
+  | {
+      type: "regex";
+      expr: RegExp | string;
+      group?: number;
+    }
+  | {
+      type: "stdout";
+    }
+  | { type: "stderr" };
+
 export type ApiMethodContext = { queue: IQueue };
 
 export type IApiScheduler<T extends string = string> = Record<

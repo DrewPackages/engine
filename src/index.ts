@@ -11,3 +11,4 @@ export type {
   IStateStorageRegistrer,
   ScheduleOutput,
 } from "./state";
+export type { OutputExtract, OutputInfo } from "./api";

@@ -15,18 +15,28 @@ const paramsSchema = {
 };
 
 function deploy(params) {
-  api.hardhat.script({
+  const [address] = api.hardhat.script({
     path: "./scripts/deploy.ts",
     envs: {
       TOKEN_NAME: params.name,
       TOKEN_SYMBOL: params.symbol,
       TOKEN_SUPPLY: params.totalSupply.toString(),
     },
+    outputs: [
+      {
+        name: "address",
+        extract: {
+          type: "regex",
+          expr: "My token deployed with address (0x[a-zA-Z0-9]{40})/gm",
+        },
+      },
+    ],
   });
 
   api.offchain.deploy({
     details: {
       envs: {
+        TOKEN_ADDRESS: address,
         RPC_URL: params.config.common.rpcUrl(),
       },
     },
