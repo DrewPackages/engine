@@ -4,5 +4,6 @@ services:
       context: manager
       args:
         VITE_RPC_URL: ${RPC_URL}
+        VITE_TOKEN_ADDRESS: ${TOKEN_ADDRESS}
     ports:
       - 8080:80
