@@ -14,6 +14,12 @@ export const DeployRequestDetailsSchema = z.object({
       z.string().or(ConfigRefSchema).or(SchedulerOutputSchema)
     )
     .optional(),
+  flags: z
+    .object({
+      build: z.boolean(),
+    })
+    .partial()
+    .optional(),
 });
 
 type IDeployRequestDetails = z.infer<typeof DeployRequestDetailsSchema>;
@@ -50,10 +56,8 @@ export class DockerComposeScheduler
   }
 
   private up(arg: IDeployRequestDetails) {
-    this.schedule(
-      "up",
-      [arg.path || "docker-compose.yaml", arg.envs || {}],
-      {}
-    );
+    this.schedule("up", [arg.path || "docker-compose.yaml", arg.envs || {}], {
+      build: arg?.flags?.build || false,
+    });
   }
 }

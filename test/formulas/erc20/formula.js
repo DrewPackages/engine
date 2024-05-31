@@ -40,6 +40,9 @@ function deploy(params) {
         TOKEN_ADDRESS: address,
         RPC_URL: params.config.common.rpcUrl(),
       },
+      flags: {
+        build: true,
+      },
     },
   });
 }

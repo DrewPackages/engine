@@ -6,7 +6,10 @@ import { StageInstruction, ValueRef } from "../types";
 import { ConfigStorage } from "../config";
 import { IStateStorageFetcher, STATE_STORAGE_TOKEN } from "../../state";
 
-type UpCall = ApiCall<[ValueRef<string>, Record<string, ValueRef<string>>], {}>;
+type UpCall = ApiCall<
+  [ValueRef<string>, Record<string, ValueRef<string>>],
+  { build?: boolean }
+>;
 
 function isUpCall(call: ApiCallDescriptor): call is UpCall {
   return isCall("dockerCompose", 1, "up", call);
@@ -37,12 +40,18 @@ export class DockerComposeParser extends BaseApiParser {
       Object.entries(call.args[1]).map(([name, val]) => [name, this.value(val)])
     );
 
+    const cmd = ["-f", this.value(call.args[0]), "up", "-d"];
+
+    if (call.metadata.build) {
+      cmd.push("--build");
+    }
+
     return {
       type: "offchain",
       image: "ghcr.io/drewpackages/engine/workers/docker-compose",
       envs: envs,
       workdir: ".",
-      cmd: ["-f", this.value(call.args[0]), "up", "-d"],
+      cmd,
       dind: true,
     };
   }
