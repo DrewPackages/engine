@@ -53,7 +53,7 @@ export class FoundryParser extends BaseApiParser {
         "$PRIVATE_KEY",
         this.value(call.args[0]),
       ],
-      outputIds: call.outputs.map((o) => o.id),
+      outputs: call.outputs.map(({ type, ...rest }) => rest),
     };
   }
 }

@@ -3,12 +3,23 @@ import "typedi";
 export * as errors from "./errors";
 export { validate } from "./validate";
 export { parse } from "./parse";
-export { IFormulaFetcher } from "./fetcher";
-export { IEnvironmentResolver, type StageInstruction } from "./interpretator";
+export { type IFormulaFetcher } from "./fetcher";
+export {
+  type IEnvironmentResolver,
+  type StageInstruction,
+  type ValueOrOutput,
+} from "./interpretator";
 export type {
   IStateStorage,
   IStateStorageFetcher,
   IStateStorageRegistrer,
   ScheduleOutput,
 } from "./state";
-export type { OutputExtract, OutputInfo } from "./api";
+export { isScheduleOutput } from "./state";
+export type {
+  OutputExtract,
+  OutputInfo,
+  StdoutOutputSpec,
+  StderrOutputSpec,
+  RegexOutputSpec,
+} from "./api";

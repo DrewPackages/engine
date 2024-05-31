@@ -3,22 +3,24 @@ import { ScheduleOutput } from "../state";
 
 type TaskStageInstruction = {
   type: "task";
-  workdir: string;
+  workdir: ValueOrOutput<string>;
   image: string;
-  cmd: Array<string>;
-  envs: Record<string, string>;
-  outputIds: Array<string>;
+  cmd: Array<ValueOrOutput<string>>;
+  envs: Record<string, ValueOrOutput<string>>;
+  outputs: Array<Pick<ScheduleOutput, "id" | "extract">>;
 };
 
 type OffchainStageInstruction = {
   type: "offchain";
-  workdir: string;
+  workdir: ValueOrOutput<string>;
   image: string;
-  cmd: Array<string>;
-  envs: Record<string, string>;
+  cmd: Array<ValueOrOutput<string>>;
+  envs: Record<string, ValueOrOutput<string>>;
   dind?: boolean;
 };
 
 export type StageInstruction = TaskStageInstruction | OffchainStageInstruction;
 
 export type ValueRef<T> = T | ConfigRef | ScheduleOutput;
+
+export type ValueOrOutput<T> = T | ScheduleOutput;

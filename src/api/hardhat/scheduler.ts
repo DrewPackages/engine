@@ -22,7 +22,7 @@ export class HardhatScheduler
   }
 
   script(arg: ScriptRequest) {
-    this.schedule(
+    return this.schedule(
       "script",
       [arg.path, arg.account || 1, arg.envs || {}],
       {

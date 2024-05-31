@@ -4,10 +4,16 @@ import { Inject, Service } from "typedi";
 import { IOffchainApi } from "../offchain";
 import z from "zod";
 import { ConfigRefSchema } from "../../params";
+import { SchedulerOutputSchema } from "src/state";
 
 export const DeployRequestDetailsSchema = z.object({
   path: z.string().or(ConfigRefSchema).optional(),
-  envs: z.record(z.string(), z.string().or(ConfigRefSchema)).optional(),
+  envs: z
+    .record(
+      z.string(),
+      z.string().or(ConfigRefSchema).or(SchedulerOutputSchema)
+    )
+    .optional(),
 });
 
 type IDeployRequestDetails = z.infer<typeof DeployRequestDetailsSchema>;

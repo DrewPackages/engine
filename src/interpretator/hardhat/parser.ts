@@ -51,7 +51,7 @@ export class HardhatParser extends BaseApiParser {
       envs: { ...envs, RPC_URL: rpcUrl, PRIVATE_KEY: privateKey },
       workdir: this.value(call.metadata.workdir) || ".",
       cmd: ["run", this.value(call.args[0]), "--network", "drew"],
-      outputIds: call.outputs.map((o) => o.id),
+      outputs: call.outputs.map(({ type, ...rest }) => rest),
     };
   }
 }

@@ -23,16 +23,25 @@ export type OutputInfo = {
   extract?: OutputExtract;
 };
 
+export type StdoutOutputSpec = {
+  type: "stdout";
+};
+
+export type StderrOutputSpec = {
+  type: "stderr";
+};
+
+export type RegexOutputSpec = {
+  type: "regex";
+  stream?: "stdout" | "stderr";
+  expr: RegExp | string;
+  groupName: string;
+};
+
 export type OutputExtract =
-  | {
-      type: "regex";
-      expr: RegExp | string;
-      group?: number;
-    }
-  | {
-      type: "stdout";
-    }
-  | { type: "stderr" };
+  | RegexOutputSpec
+  | StdoutOutputSpec
+  | StderrOutputSpec;
 
 export type ApiMethodContext = { queue: IQueue };
 

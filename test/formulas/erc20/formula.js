@@ -27,7 +27,8 @@ function deploy(params) {
         name: "address",
         extract: {
           type: "regex",
-          expr: "My token deployed with address (0x[a-zA-Z0-9]{40})/gm",
+          expr: "My token deployed with address (?<address>0x[a-zA-Z0-9]{40})",
+          groupName: "address",
         },
       },
     ],
