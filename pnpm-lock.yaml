@@ -37,6 +37,9 @@ devDependencies:
   '@types/jest':
     specifier: ^29.5.12
     version: 29.5.12
+  '@types/node':
+    specifier: ^20.14.1
+    version: 20.14.1
   chai:
     specifier: ^5.1.0
     version: 5.1.1
