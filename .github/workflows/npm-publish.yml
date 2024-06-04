@@ -42,6 +42,6 @@ jobs:
           version: 9
       - run: pnpm i
       - run: pnpm build
-      - run: pnpm publish
+      - run: pnpm publish --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
