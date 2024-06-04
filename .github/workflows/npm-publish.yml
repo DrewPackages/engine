@@ -30,6 +30,8 @@ jobs:
       - run: pnpm test
 
   publish-npm:
+    permissions:
+      contents: write
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -41,6 +43,12 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: 9
+      - name: "Automated Version Bump"
+        uses: "phips28/gh-action-bump-version@master"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag-prefix: "v"
       - run: pnpm i
       - run: pnpm build
       - run: pnpm publish --no-git-checks --access public
