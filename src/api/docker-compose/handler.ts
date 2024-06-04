@@ -4,7 +4,7 @@ import { Inject, Service } from "typedi";
 import { IOffchainApi } from "../offchain";
 import z from "zod";
 import { ConfigRefSchema } from "../../params";
-import { SchedulerOutputSchema } from "src/state";
+import { SchedulerOutputSchema } from "../../state";
 
 export const DeployRequestDetailsSchema = z.object({
   path: z.string().or(ConfigRefSchema).optional(),
