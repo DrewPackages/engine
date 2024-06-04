@@ -6,13 +6,13 @@ name: Node.js Package
 on:
   push:
     branches:
-      - 'main'
+      - "main"
     paths:
-      - 'src/**.ts'
-      - 'test/**.ts'
-      - 'package*.json'
-      - 'rollup.config.js'
-      - 'tsconfig.json'
+      - "src/**.ts"
+      - "test/**.ts"
+      - "package*.json"
+      - "rollup.config.js"
+      - "tsconfig.json"
 
 jobs:
   build:
@@ -22,8 +22,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm i
-      - run: npm test
+      - run: pnpm i
+      - run: pnpm test
 
   publish-npm:
     needs: build
@@ -34,8 +34,8 @@ jobs:
         with:
           node-version: 18
           registry-url: https://registry.npmjs.org/
-      - run: npm i
-      - run: npm build
-      - run: npm publish
+      - run: pnpm i
+      - run: pnpm build
+      - run: pnpm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
