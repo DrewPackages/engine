@@ -6,12 +6,10 @@ on:
       subdir:
         required: true
         type: string
+
 env:
   PACKAGE: "ghcr.io/drewpackages/engine/workers/${{ inputs.subdir }}"
   IMAGEDIR: jobs/${{ inputs.subdir }}
-
-permissions:
-  packages: write
 
 jobs:
   buildAndPublish:

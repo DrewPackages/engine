@@ -11,6 +11,9 @@ on:
 
 jobs:
   imageBuild:
+    permissions:
+      packages: write
     uses: "./.github/workflows/docker.yml"
     with:
       subdir: "docker-compose"
+    secrets: inherit
