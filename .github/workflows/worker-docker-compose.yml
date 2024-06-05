@@ -7,7 +7,7 @@ on:
     paths:
       - "jobs/docker-compose/**"
       - ".github/workflows/worker-docker-compose.yml"
-      - ".github/actions/docker.yml"
+      - ".github/workflows/docker.yml"
 
 jobs:
   imageBuild:
