@@ -9,6 +9,7 @@ on:
 env:
   PACKAGE: "ghcr.io/drewpackages/workers/${{ inputs.subdir }}"
   IMAGEDIR: jobs/${{ inputs.subdir }}
+
 jobs:
   buildAndPublish:
     name: "Build and publish"
@@ -17,7 +18,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        sparse-checkout: ${{ env.IMAGEDIR }}
+        with:
+          sparse-checkout: ${{ env.IMAGEDIR }}
       - uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
           registry: ghcr.io

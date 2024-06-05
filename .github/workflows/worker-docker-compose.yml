@@ -10,7 +10,7 @@ on:
       - ".github/actions/docker.yml"
 
 jobs:
-    imageBuild:
-        uses: '../actions/docker.yml'
-        with:
-            subdir: 'docker-compose'
+  imageBuild:
+    uses: "./.github/workflows/docker.yml"
+    with:
+      subdir: "docker-compose"
