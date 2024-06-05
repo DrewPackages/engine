@@ -1,0 +1,34 @@
+name: "Reusable Docker Build"
+
+on:
+  workflow_call:
+    inputs:
+      subdir:
+        required: true
+        type: string
+env:
+  PACKAGE: "ghcr.io/drewpackages/workers/${{ inputs.subdir }}"
+  IMAGEDIR: jobs/${{ inputs.subdir }}
+jobs:
+  buildAndPublish:
+    name: "Build and publish"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        sparse-checkout: ${{ env.IMAGEDIR }}
+      - uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        env:
+          PACKAGE: ${{ env.PACKAGE }}
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ env.PACKAGE }}:latest

@@ -1,0 +1,16 @@
+name: Docker Compose worker image
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "jobs/docker-compose/**"
+      - ".github/workflows/worker-docker-compose.yml"
+      - ".github/actions/docker.yml"
+
+jobs:
+    imageBuild:
+        uses: '../actions/docker.yml'
+        with:
+            subdir: 'docker-compose'
