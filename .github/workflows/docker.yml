@@ -7,8 +7,11 @@ on:
         required: true
         type: string
 env:
-  PACKAGE: "ghcr.io/drewpackages/engine-workers-${{ inputs.subdir }}"
+  PACKAGE: "ghcr.io/drewpackages/engine/workers/${{ inputs.subdir }}"
   IMAGEDIR: jobs/${{ inputs.subdir }}
+
+permissions:
+  packages: write
 
 jobs:
   buildAndPublish:
@@ -31,8 +34,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v4
-        env:
-          PACKAGE: ${{ env.PACKAGE }}
         with:
           context: ${{ env.IMAGEDIR }}
           platforms: linux/amd64,linux/arm64
