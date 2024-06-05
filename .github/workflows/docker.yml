@@ -7,7 +7,7 @@ on:
         required: true
         type: string
 env:
-  PACKAGE: "ghcr.io/drewpackages/workers/${{ inputs.subdir }}"
+  PACKAGE: "ghcr.io/drewpackages/engine-workers-${{ inputs.subdir }}"
   IMAGEDIR: jobs/${{ inputs.subdir }}
 
 jobs:
