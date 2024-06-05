@@ -5,7 +5,7 @@ on:
     branches:
       - "main"
     paths:
-      - "jobs/docker-compose/**"
+      - "jobs/hardhat/**"
       - ".github/workflows/worker-hardhat.yml"
       - ".github/workflows/docker.yml"
 
