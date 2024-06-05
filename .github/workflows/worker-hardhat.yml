@@ -1,0 +1,19 @@
+name: Hardhat worker image
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "jobs/docker-compose/**"
+      - ".github/workflows/worker-hardhat.yml"
+      - ".github/workflows/docker.yml"
+
+jobs:
+  imageBuild:
+    permissions:
+      packages: write
+    uses: "./.github/workflows/docker.yml"
+    with:
+      subdir: "hardhat"
+    secrets: inherit
