@@ -53,6 +53,7 @@ export class BlueprintParser extends BaseApiParser {
       // cmd: ["run", this.value(call.args[0]), "--network", "drew"],
       cmd: ["run"],
       outputs: call.outputs.map(({ type, ...rest }) => rest),
+      interactive: true,
     };
   }
 }
