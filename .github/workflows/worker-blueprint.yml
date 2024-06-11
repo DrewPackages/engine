@@ -1,0 +1,19 @@
+name: Blueprint worker image
+
+on:
+  push:
+    branches:
+      - "feature/ton"
+    paths:
+      - "jobs/blueprint/**"
+      - ".github/workflows/worker-blueprint.yml"
+      - ".github/workflows/docker.yml"
+
+jobs:
+  imageBuild:
+    permissions:
+      packages: write
+    uses: "./.github/workflows/docker.yml"
+    with:
+      subdir: "blueprint"
+    secrets: inherit

@@ -6,5 +6,6 @@ export {
 export * from "./types";
 export * from "./parser";
 export * from "./hardhat";
+export * from "./blueprint";
 export * from "./foundry";
 export * from "./docker-compose";
