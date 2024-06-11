@@ -8,6 +8,8 @@ export {
   type IEnvironmentResolver,
   type StageInstruction,
   type ValueOrOutput,
+  type TaskStageInstruction,
+  type OffchainStageInstruction,
 } from "./interpretator";
 export type {
   IStateStorage,
