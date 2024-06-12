@@ -1,16 +1,17 @@
 import { ConfigRef } from "../params/config-refs";
 import { ScheduleOutput } from "../state";
 
-type TaskStageInstruction = {
+export type TaskStageInstruction = {
   type: "task";
   workdir: ValueOrOutput<string>;
   image: string;
   cmd: Array<ValueOrOutput<string>>;
   envs: Record<string, ValueOrOutput<string>>;
   outputs: Array<Pick<ScheduleOutput, "id" | "extract">>;
+  interactive?: boolean;
 };
 
-type OffchainStageInstruction = {
+export type OffchainStageInstruction = {
   type: "offchain";
   workdir: ValueOrOutput<string>;
   image: string;
