@@ -3,7 +3,7 @@ name: Blueprint worker image
 on:
   push:
     branches:
-      - "feature/ton"
+      - "main"
     paths:
       - "jobs/blueprint/**"
       - ".github/workflows/worker-blueprint.yml"
