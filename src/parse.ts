@@ -11,6 +11,7 @@ import {
 } from "./interpretator";
 import { UnknownApiCallError } from "./errors";
 import { IStateStorage, STATE_STORAGE_TOKEN } from "./state";
+import { findConfigRefsDeep } from "./utils/object";
 
 export async function parse(
   calls: Array<ApiCall>,
@@ -20,7 +21,15 @@ export async function parse(
   Container.set(ENVIRONMENT_RESOLVER_TOKEN, env);
   Container.set(STATE_STORAGE_TOKEN, state);
 
-  await resolveConfigs();
+  const foundConfigRefs = calls.flatMap((call) => findConfigRefsDeep(call));
+
+  await resolveConfigs(
+    new Set(
+      foundConfigRefs
+        .map((ref) => ref.group)
+        .concat(calls.flatMap((call) => call.requiredConfigGroups || []))
+    )
+  );
 
   const parsers = Container.getMany<BaseApiParser>(API_PARSER_TOKEN);
 

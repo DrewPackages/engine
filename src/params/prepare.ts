@@ -7,11 +7,20 @@ export function addConfigs(params: object): object {
 
   return {
     ...params,
-    config: {
-      common: {
-        rpcUrl: getConfigRef("common", "rpcUrl"),
-        privateKey: getConfigRef("common", "privateKey"),
-      },
-    },
+    config: new Proxy(
+      {},
+      {
+        get(_, group: string) {
+          return new Proxy(
+            {},
+            {
+              get(_, configKey: string) {
+                return getConfigRef(group, configKey);
+              },
+            }
+          );
+        },
+      }
+    ),
   };
 }

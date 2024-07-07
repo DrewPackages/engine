@@ -1,5 +1,5 @@
 import { ConfigStorage } from "./config-storage";
-import { CommonConfig } from "./common/type";
+import { EvmConfig } from "./evm/type";
 import { Container } from "typedi";
 import { CONFIG_RESOLVER_TOKEN } from "./constants";
 
@@ -8,11 +8,11 @@ export interface IEnvironmentResolver {
   getEnvBatch(...names: Array<string>): Promise<Record<string, string>>;
 }
 
-export interface IConfigProvider<T extends CommonConfig> {
+export interface IConfigProvider<T extends EvmConfig> {
   resolve(): Promise<T>;
 }
 
-export abstract class BaseConfigResolver<T extends CommonConfig>
+export abstract class BaseConfigResolver<T extends EvmConfig>
   implements IConfigProvider<T>
 {
   constructor(
@@ -31,8 +31,14 @@ export abstract class BaseConfigResolver<T extends CommonConfig>
   }
 }
 
-export async function resolveConfigs() {
+export async function resolveConfigs(requiredConfigGroups: Set<string>) {
   const resolvers = Container.getMany(CONFIG_RESOLVER_TOKEN);
 
-  await Promise.all(resolvers.map((r) => r.resolve()));
+  await Promise.all(
+    resolvers.map((r) => {
+      if (requiredConfigGroups.has(r.group)) {
+        return r.resolve();
+      }
+    })
+  );
 }

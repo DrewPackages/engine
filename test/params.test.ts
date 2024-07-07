@@ -4,6 +4,7 @@ import { readParamsSchema, validateParam } from "../src/params";
 import { validate } from "../src";
 import { ConfigRef } from "../src/params/config-refs";
 import { TestStorage } from "./state";
+import { findConfigRefsDeep } from "../src/utils/object";
 
 describe("Engine: Params", () => {
   const fetcher = new TestsFetcher();
@@ -164,8 +165,9 @@ describe("Engine: Params", () => {
       expect(steps).toHaveLength(1);
       expect(steps[0].method).toEqual("sign");
       expect(steps[0].args[0]).toBeInstanceOf(ConfigRef);
-      expect(steps[0].args[0]).toHaveProperty("group", "common");
+      expect(steps[0].args[0]).toHaveProperty("group", "evm");
       expect(steps[0].args[0]).toHaveProperty("key", "rpcUrl");
+      expect(findConfigRefsDeep(steps)).toHaveLength(1);
     });
   });
 });

@@ -38,7 +38,7 @@ function deploy(params) {
     details: {
       envs: {
         TOKEN_ADDRESS: address,
-        RPC_URL: params.config.common.rpcUrl(),
+        RPC_URL: params.config.evm.rpcUrl(),
       },
       flags: {
         build: true,

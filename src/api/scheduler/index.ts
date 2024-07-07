@@ -8,7 +8,8 @@ export class BaseScheduler implements ApiMethodContext {
     readonly queue: IQueue,
     readonly group: string,
     readonly defaultStage: string,
-    readonly version: number = 1
+    readonly version: number = 1,
+    readonly requiredConfigGroups: Array<string> = []
   ) {}
 
   private getCallOutputIds(
@@ -46,6 +47,7 @@ export class BaseScheduler implements ApiMethodContext {
       metadata,
       stage: stage || this.defaultStage,
       outputs,
+      requiredConfigGroups: this.requiredConfigGroups,
     });
 
     return outputs;

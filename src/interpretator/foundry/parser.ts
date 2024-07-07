@@ -3,7 +3,7 @@ import { API_PARSER_TOKEN, BaseApiParser } from "../parser";
 import { ApiCall } from "../../api";
 import { ApiCallDescriptor, isCall } from "../../api/types";
 import { StageInstruction, ValueRef } from "../types";
-import { CommonConfig, ConfigStorage } from "../config";
+import { EvmConfig, ConfigStorage } from "../config";
 import { IStateStorageFetcher, STATE_STORAGE_TOKEN } from "../../state";
 
 type SignCall = ApiCall<[ValueRef<string>, ValueRef<number>], {}>;
@@ -27,7 +27,7 @@ export class FoundryParser extends BaseApiParser {
   public async parse<T extends ApiCallDescriptor>(
     call: T
   ): Promise<StageInstruction> {
-    const config: CommonConfig = await this.configs.get("common");
+    const config: EvmConfig = await this.configs.get("evm");
 
     if (isSignCall(call)) {
       return this.parseSign(call, config);
@@ -38,7 +38,7 @@ export class FoundryParser extends BaseApiParser {
 
   private parseSign(
     call: SignCall,
-    { privateKey }: CommonConfig
+    { privateKey }: EvmConfig
   ): StageInstruction {
     return {
       type: "task",

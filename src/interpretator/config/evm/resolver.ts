@@ -1,5 +1,5 @@
 import { BaseConfigResolver, IEnvironmentResolver } from "../resolve";
-import { CommonConfig } from "./type";
+import { EvmConfig } from "./type";
 import { Inject, Service } from "typedi";
 import {
   CONFIG_RESOLVER_TOKEN,
@@ -8,17 +8,17 @@ import {
 import { ConfigStorage } from "../config-storage";
 
 @Service(CONFIG_RESOLVER_TOKEN)
-export class CommonConfigResolver extends BaseConfigResolver<CommonConfig> {
+export class EvmConfigResolver extends BaseConfigResolver<EvmConfig> {
   constructor(
     @Inject(ENVIRONMENT_RESOLVER_TOKEN)
     private readonly env: IEnvironmentResolver,
     @Inject()
     storage: ConfigStorage
   ) {
-    super("common", storage);
+    super("evm", storage);
   }
 
-  async readConfig(): Promise<CommonConfig> {
+  async readConfig(): Promise<EvmConfig> {
     const { RPC_URL, PRIVATE_KEY } = await this.env.getEnvBatch(
       "RPC_URL",
       "PRIVATE_KEY"

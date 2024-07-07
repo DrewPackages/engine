@@ -3,7 +3,7 @@ import { API_PARSER_TOKEN, BaseApiParser } from "../../interpretator/parser";
 import { ApiCall } from "../../api";
 import { ApiCallDescriptor, isCall } from "../../api/types";
 import { StageInstruction, ValueRef } from "../types";
-import { CommonConfig, ConfigStorage } from "../config";
+import { ConfigStorage } from "../config";
 import { IStateStorageFetcher, STATE_STORAGE_TOKEN } from "../../state";
 
 type ScriptCall = ApiCall<
@@ -28,19 +28,14 @@ export class BlueprintParser extends BaseApiParser {
   public async parse<T extends ApiCallDescriptor>(
     call: T
   ): Promise<StageInstruction> {
-    const config: CommonConfig = await this.configs.get("common");
-
     if (isScriptCall(call)) {
-      return this.parseScript(call, config);
+      return this.parseScript(call);
     }
 
     throw new Error("Unknown api call");
   }
 
-  private parseScript(
-    call: ScriptCall,
-    { privateKey, rpcUrl }: CommonConfig
-  ): StageInstruction {
+  private parseScript(call: ScriptCall): StageInstruction {
     const envs = Object.fromEntries(
       Object.entries(call.args[2]).map(([name, val]) => [name, this.value(val)])
     );

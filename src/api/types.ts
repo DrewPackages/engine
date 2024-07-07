@@ -16,6 +16,7 @@ export type ApiCall<
   metadata: M;
   stage: string;
   outputs: Array<ScheduleOutput>;
+  requiredConfigGroups: Array<string>;
 };
 
 export type OutputInfo = {

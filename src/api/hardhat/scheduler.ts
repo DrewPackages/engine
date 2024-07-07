@@ -18,7 +18,7 @@ export class HardhatScheduler
   implements IApiScheduler<"script">
 {
   constructor(@Inject(QUEUE_TOKEN) queue: IQueue) {
-    super(queue, "hardhat", "onchain");
+    super(queue, "hardhat", "onchain", 1, ["evm"]);
   }
 
   script(arg: ScriptRequest) {
