@@ -3,7 +3,7 @@ import { API_PARSER_TOKEN, BaseApiParser } from "../../interpretator/parser";
 import { ApiCall } from "../../api";
 import { ApiCallDescriptor, isCall } from "../../api/types";
 import { StageInstruction, ValueRef } from "../types";
-import { ConfigStorage } from "../config";
+import { CONFIG_STORAGE_TOKEN, EvmConfig, IConfigStorage } from "../config";
 import { IStateStorageFetcher, STATE_STORAGE_TOKEN } from "../../state";
 
 type ScriptCall = ApiCall<
@@ -17,8 +17,8 @@ function isScriptCall(call: ApiCallDescriptor): call is ScriptCall {
 
 export class BlueprintParser extends BaseApiParser {
   constructor(
-    @Inject()
-    configs: ConfigStorage,
+    @Inject(CONFIG_STORAGE_TOKEN)
+    configs: IConfigStorage<EvmConfig>,
     @Inject(STATE_STORAGE_TOKEN)
     state: IStateStorageFetcher
   ) {

@@ -3,17 +3,18 @@ import { EvmConfig } from "./type";
 import { Inject, Service } from "typedi";
 import {
   CONFIG_RESOLVER_TOKEN,
+  CONFIG_STORAGE_TOKEN,
   ENVIRONMENT_RESOLVER_TOKEN,
 } from "../constants";
-import { ConfigStorage } from "../config-storage";
+import { IConfigStorage } from "../config-storage";
 
 @Service(CONFIG_RESOLVER_TOKEN)
 export class EvmConfigResolver extends BaseConfigResolver<EvmConfig> {
   constructor(
     @Inject(ENVIRONMENT_RESOLVER_TOKEN)
     private readonly env: IEnvironmentResolver,
-    @Inject()
-    storage: ConfigStorage
+    @Inject(CONFIG_STORAGE_TOKEN)
+    storage: IConfigStorage
   ) {
     super("evm", storage);
   }

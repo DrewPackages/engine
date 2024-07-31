@@ -1,4 +1,4 @@
-import { ConfigStorage } from "./config-storage";
+import { IConfigStorage } from "./config-storage";
 import { EvmConfig } from "./evm/type";
 import { Container } from "typedi";
 import { CONFIG_RESOLVER_TOKEN } from "./constants";
@@ -17,7 +17,7 @@ export abstract class BaseConfigResolver<T extends EvmConfig>
 {
   constructor(
     public readonly group: string,
-    private readonly storage: ConfigStorage
+    private readonly storage: IConfigStorage
   ) {}
 
   abstract readConfig(): Promise<T>;

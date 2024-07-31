@@ -2,7 +2,7 @@ import { Token } from "typedi";
 import { ApiCallDescriptor } from "../../api/types";
 import { StageInstruction, ValueOrOutput, ValueRef } from "../types";
 import { isConfigRef } from "../../params";
-import { ConfigStorage } from "../config";
+import { EvmConfig, IConfigStorage } from "../config";
 import { IStateStorageFetcher } from "../../state";
 
 export const API_PARSER_TOKEN = new Token<BaseApiParser>("API_PARSER");
@@ -11,7 +11,7 @@ export abstract class BaseApiParser {
   constructor(
     public readonly apiGroup: string,
     public readonly apiVersion: number,
-    protected readonly configs: ConfigStorage,
+    protected readonly configs: IConfigStorage<EvmConfig>,
     private readonly state: IStateStorageFetcher
   ) {}
 

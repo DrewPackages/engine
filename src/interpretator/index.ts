@@ -2,6 +2,8 @@ export {
   IEnvironmentResolver,
   resolveConfigs,
   ENVIRONMENT_RESOLVER_TOKEN,
+  CONFIG_STORAGE_TOKEN,
+  type IConfigStorage,
 } from "./config";
 export * from "./types";
 export * from "./parser";

@@ -10,6 +10,7 @@ export {
   type ValueOrOutput,
   type TaskStageInstruction,
   type OffchainStageInstruction,
+  type IConfigStorage,
 } from "./interpretator";
 export type {
   IStateStorage,
@@ -25,3 +26,4 @@ export type {
   StderrOutputSpec,
   RegexOutputSpec,
 } from "./api";
+export { ConfigRef } from "./params";

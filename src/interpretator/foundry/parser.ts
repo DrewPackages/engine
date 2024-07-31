@@ -3,7 +3,7 @@ import { API_PARSER_TOKEN, BaseApiParser } from "../parser";
 import { ApiCall } from "../../api";
 import { ApiCallDescriptor, isCall } from "../../api/types";
 import { StageInstruction, ValueRef } from "../types";
-import { EvmConfig, ConfigStorage } from "../config";
+import { CONFIG_STORAGE_TOKEN, EvmConfig, IConfigStorage } from "../config";
 import { IStateStorageFetcher, STATE_STORAGE_TOKEN } from "../../state";
 
 type SignCall = ApiCall<[ValueRef<string>, ValueRef<number>], {}>;
@@ -16,8 +16,8 @@ export class FoundryParser extends BaseApiParser {
   private static image = "ghcr.io/drewpackages/engine/workers/foundry";
 
   constructor(
-    @Inject()
-    configs: ConfigStorage,
+    @Inject(CONFIG_STORAGE_TOKEN)
+    configs: IConfigStorage<EvmConfig>,
     @Inject(STATE_STORAGE_TOKEN)
     state: IStateStorageFetcher
   ) {
