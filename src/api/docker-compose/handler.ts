@@ -11,7 +11,7 @@ export const DeployRequestDetailsSchema = z.object({
   envs: z
     .record(
       z.string(),
-      z.string().or(ConfigRefSchema).or(SchedulerOutputSchema)
+      z.string().or(ConfigRefSchema).or(SchedulerOutputSchema).optional()
     )
     .optional(),
   flags: z
