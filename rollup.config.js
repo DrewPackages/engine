@@ -3,11 +3,18 @@ import terser from "@rollup/plugin-terser";
 
 export default {
   input: "src/index.ts",
-  output: {
-    dir: "out",
-    format: "esm",
-    entryFileNames: "[name].js",
-  },
+  output: [
+    {
+      dir: "out",
+      format: "esm",
+      entryFileNames: "[name].mjs",
+    },
+    {
+      dir: "out",
+      format: "cjs",
+      entryFileNames: "[name].cjs",
+    },
+  ],
   treeshake: "recommended",
   external: ["reflect-metadata", "typedi", "jsonschema", "zod"],
   plugins: [

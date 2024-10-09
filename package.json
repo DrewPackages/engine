@@ -2,7 +2,10 @@
   "name": "@drewpackages/engine",
   "version": "0.3.1",
   "description": "",
-  "main": "out/index.js",
+  "exports": {
+    "import": "./out/index.mjs",
+    "require": "./out/index.cjs"
+  },
   "types": "out/index.d.ts",
   "type": "module",
   "scripts": {
