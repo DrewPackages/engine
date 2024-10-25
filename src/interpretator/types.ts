@@ -3,7 +3,6 @@ import { ScheduleOutput } from "../state";
 
 export type TaskStageInstruction = {
   type: "task";
-  outputs: Array<Pick<ScheduleOutput, "id" | "extract">>;
   interactive?: boolean;
 };
 
@@ -17,6 +16,7 @@ export type StageInstructionCommon = {
   image: string;
   cmd: Array<ValueOrOutput<string>>;
   envs: Record<string, ValueOrOutput<string>>;
+  outputs: Array<Pick<ScheduleOutput, "id" | "extract">>;
 };
 
 export type StageInstruction = (

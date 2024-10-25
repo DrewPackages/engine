@@ -56,8 +56,23 @@ export class DockerComposeScheduler
   }
 
   private up(arg: IDeployRequestDetails) {
-    this.schedule("up", [arg.path || "docker-compose.yaml", arg.envs || {}], {
-      build: arg?.flags?.build || false,
-    });
+    this.schedule(
+      "up",
+      [arg.path || "docker-compose.yaml", arg.envs || {}],
+      {
+        build: arg?.flags?.build || false,
+      },
+      "offchain",
+      [
+        {
+          name: "containerIds",
+          extract: {
+            type: "regex",
+            expr: "CONTAINER ID\n(?<containerIds>([a-f0-9]+\n?)*)",
+            groupName: "containerIds",
+          },
+        },
+      ]
+    );
   }
 }

@@ -53,6 +53,7 @@ export class DockerComposeParser extends BaseApiParser {
       workdir: ".",
       cmd,
       dind: true,
+      outputs: call.outputs.map(({ id, extract }) => ({ id, extract })),
     };
   }
 }

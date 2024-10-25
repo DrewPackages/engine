@@ -9,3 +9,4 @@ if [[ -n $DOCKER_COMPOSE_PROJECT_NAME ]]; then
     DC_P_OPS="-p $DOCKER_COMPOSE_PROJECT_NAME"
 fi
 docker compose $DC_P_OPS $@
+docker compose $DC_P_OPS ps --format "table {{.ID}}" 
